@@ -3,38 +3,97 @@ import {
   NodeManagerContextOf,
   OnLavalinkManager,
   OnNodeManager,
+  PlayerManager,
 } from '@necord/lavalink';
 import { Injectable, Logger, UseFilters } from '@nestjs/common';
-import { ActivityType } from 'discord.js';
+import { ActivityType, GuildManager } from 'discord.js';
 import { Context, ContextOf, On, Once } from 'necord';
 import { ErrorFilter } from './filters/error.filter';
+import { MAIN_EMBED } from './utils/embeds.util';
 
 @Injectable()
 @UseFilters(ErrorFilter)
 export class BotService {
+  constructor(
+    private guildManager: GuildManager,
+    private playerManager: PlayerManager,
+  ) {}
+
   private logger = new Logger(BotService.name);
 
   @Once('ready')
-  public async onReady(@Context() [client]: ContextOf<'ready'>) {
+  async onReady(@Context() [client]: ContextOf<'ready'>) {
     this.logger.log(`Bot logged in as ${client.user.username}`);
 
     client.user.setActivity('/help', { type: ActivityType.Listening });
   }
 
   @On('warn')
-  public onWarn(@Context() [message]: ContextOf<'warn'>) {
+  onWarn(@Context() [message]: ContextOf<'warn'>) {
     this.logger.warn(message);
   }
 
   @OnNodeManager('connect')
-  public onReadyLavalink(@Context() [node]: NodeManagerContextOf<'connect'>) {
+  onReadyLavalink(@Context() [node]: NodeManagerContextOf<'connect'>) {
     this.logger.log(`Node: ${node.options.id} Connected`);
   }
 
   @OnLavalinkManager('playerCreate')
-  public onPlayerCreate(
+  onPlayerCreate(
     @Context() [player]: LavalinkManagerContextOf<'playerCreate'>,
   ) {
     this.logger.log(`Player created at ${player.guildId}`);
+  }
+
+  @OnLavalinkManager('queueEnd')
+  async onPlayerQueueEmptyEnd(
+    @Context() [player]: LavalinkManagerContextOf<'queueEnd'>,
+  ) {
+    setTimeout(async () => {
+      await player.destroy();
+
+      const guild = this.guildManager.cache.get(player.guildId);
+
+      const textChannel = guild.channels.cache.get(player.textChannelId);
+
+      if (!textChannel.isTextBased()) return;
+
+      const embed = MAIN_EMBED().setDescription(
+        'В канале ничего не происходит больше 5 минут - очередь очищена, бот отключен.',
+      );
+
+      textChannel.send({ embeds: [embed] });
+    }, 300000);
+  }
+
+  @On('voiceStateUpdate')
+  async onVoiceStateUpdate(
+    @Context() [oldState, newState]: ContextOf<'voiceStateUpdate'>,
+  ) {
+    const voiceChannel = oldState.channel || newState.channel;
+
+    const voiceChannelMembers = voiceChannel.members.filter(
+      (member) => !member.user.bot,
+    );
+
+    if (!voiceChannelMembers.size) {
+      const player = this.playerManager.get(voiceChannel.guildId);
+
+      if (!player) return;
+
+      const textChannel = voiceChannel.guild.channels.cache.get(
+        player.textChannelId,
+      );
+
+      await player.destroy();
+
+      if (!textChannel.isTextBased()) return;
+
+      const embed = MAIN_EMBED().setDescription(
+        'В канале никого нет - очередь очищена, бот отключен.',
+      );
+
+      await textChannel.send({ embeds: [embed] });
+    }
   }
 }

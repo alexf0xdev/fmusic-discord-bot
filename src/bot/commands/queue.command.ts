@@ -1,6 +1,6 @@
 import { PlayerManager } from '@necord/lavalink';
 import { Injectable, UseFilters } from '@nestjs/common';
-import { EmbedBuilder, MessageFlags } from 'discord.js';
+import { MessageFlags } from 'discord.js';
 import { Context, SlashCommand, SlashCommandContext } from 'necord';
 import { ErrorFilter } from '../filters/error.filter';
 import { SOURCES } from '../utils/constants.util';
@@ -30,36 +30,32 @@ export class QueueCommand {
 
     const currentTrack = player.queue.current;
 
-    let currentTrackEmbed: EmbedBuilder;
-
-    if (currentTrack) {
-      currentTrackEmbed = MAIN_EMBED()
-        .setTitle(currentTrack.info.title)
-        .setAuthor({ name: 'Сейчас играет' })
-        .setDescription(currentTrack.info.author)
-        .setURL(currentTrack.info.uri)
-        .setThumbnail(currentTrack.info.artworkUrl)
-        .addFields(
-          {
-            name: 'Длительность',
-            value: `${formatMilliseconds(player.lastPosition)} из ${formatMilliseconds(currentTrack.info.duration)}`,
-            inline: true,
-          },
-          {
-            name: '\u200B',
-            value: '\u200B',
-            inline: true,
-          },
-        )
-        .setFooter({
-          text: SOURCES[currentTrack.info.sourceName].name,
-          iconURL: SOURCES[currentTrack.info.sourceName].iconUrl,
-        });
-    } else {
-      currentTrackEmbed = MAIN_EMBED()
-        .setAuthor({ name: 'Сейчас играет' })
-        .setDescription('Сейчас ничего не играет.');
-    }
+    const currentTrackEmbed = currentTrack
+      ? MAIN_EMBED()
+          .setTitle(currentTrack.info.title)
+          .setAuthor({ name: 'Сейчас играет' })
+          .setDescription(currentTrack.info.author)
+          .setURL(currentTrack.info.uri)
+          .setThumbnail(currentTrack.info.artworkUrl)
+          .addFields(
+            {
+              name: 'Длительность',
+              value: `${formatMilliseconds(player.lastPosition)} из ${formatMilliseconds(currentTrack.info.duration)}`,
+              inline: true,
+            },
+            {
+              name: '\u200B',
+              value: '\u200B',
+              inline: true,
+            },
+          )
+          .setFooter({
+            text: SOURCES[currentTrack.info.sourceName].name,
+            iconURL: SOURCES[currentTrack.info.sourceName].iconUrl,
+          })
+      : MAIN_EMBED()
+          .setAuthor({ name: 'Сейчас играет' })
+          .setDescription('Сейчас ничего не играет.');
 
     const tracks = player.queue.tracks;
 
