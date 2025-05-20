@@ -24,6 +24,14 @@ pnpm install
 
 Create a `.env` file in the project directory and fill it with the following `.enx.example`.
 
+### Build project
+
+Build this project using:
+
+```bash
+pnpm build
+```
+
 ### Run project
 
 Run the project using:
