@@ -4,6 +4,7 @@ import { EmbedBuilder, MessageFlags } from 'discord.js';
 import { Context, SlashCommand, SlashCommandContext } from 'necord';
 import { ErrorFilter } from '../filters/error.filter';
 import { SOURCES } from '../utils/constants.util';
+import { ERROR_EMBED, MAIN_EMBED } from '../utils/embeds.util';
 import { formatMilliseconds } from '../utils/format.util';
 
 @Injectable()
@@ -19,10 +20,7 @@ export class QueueCommand {
     const player = this.playerManager.get(interaction.guild.id);
 
     if (!player) {
-      const embed = new EmbedBuilder()
-        .setColor('#ff0000')
-        .setAuthor({ name: 'Ошибка' })
-        .setDescription('Бот не запущен.');
+      const embed = ERROR_EMBED().setDescription('Бот не запущен.');
 
       return interaction.reply({
         embeds: [embed],
@@ -32,34 +30,40 @@ export class QueueCommand {
 
     const currentTrack = player.queue.current;
 
-    const currentTrackEmbed = new EmbedBuilder()
-      .setColor('#FF8000')
-      .setTitle(currentTrack.info.title)
-      .setAuthor({ name: 'Сейчас играет' })
-      .setDescription(currentTrack.info.author)
-      .setURL(currentTrack.info.uri)
-      .setThumbnail(currentTrack.info.artworkUrl)
-      .addFields(
-        {
-          name: 'Длительность',
-          value: `${formatMilliseconds(player.lastPosition)} из ${formatMilliseconds(currentTrack.info.duration)}`,
-          inline: true,
-        },
-        {
-          name: '\u200B',
-          value: '\u200B',
-          inline: true,
-        },
-      )
-      .setFooter({
-        text: SOURCES[currentTrack.info.sourceName].name,
-        iconURL: SOURCES[currentTrack.info.sourceName].iconUrl,
-      });
+    let currentTrackEmbed: EmbedBuilder;
+
+    if (currentTrack) {
+      currentTrackEmbed = MAIN_EMBED()
+        .setTitle(currentTrack.info.title)
+        .setAuthor({ name: 'Сейчас играет' })
+        .setDescription(currentTrack.info.author)
+        .setURL(currentTrack.info.uri)
+        .setThumbnail(currentTrack.info.artworkUrl)
+        .addFields(
+          {
+            name: 'Длительность',
+            value: `${formatMilliseconds(player.lastPosition)} из ${formatMilliseconds(currentTrack.info.duration)}`,
+            inline: true,
+          },
+          {
+            name: '\u200B',
+            value: '\u200B',
+            inline: true,
+          },
+        )
+        .setFooter({
+          text: SOURCES[currentTrack.info.sourceName].name,
+          iconURL: SOURCES[currentTrack.info.sourceName].iconUrl,
+        });
+    } else {
+      currentTrackEmbed = MAIN_EMBED()
+        .setAuthor({ name: 'Сейчас играет' })
+        .setDescription('Сейчас ничего не играет.');
+    }
 
     const tracks = player.queue.tracks;
 
-    const queueListEmbed = new EmbedBuilder()
-      .setColor('#FF8000')
+    const queueListEmbed = MAIN_EMBED()
       .setAuthor({ name: 'Очередь треков' })
       .setDescription(
         tracks.length

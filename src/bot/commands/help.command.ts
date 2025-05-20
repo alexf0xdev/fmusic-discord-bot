@@ -1,7 +1,8 @@
 import { Injectable, UseFilters } from '@nestjs/common';
-import { EmbedBuilder, MessageFlags } from 'discord.js';
+import { MessageFlags } from 'discord.js';
 import { Context, SlashCommand, SlashCommandContext } from 'necord';
 import { ErrorFilter } from '../filters/error.filter';
+import { MAIN_EMBED } from '../utils/embeds.util';
 
 @Injectable()
 @UseFilters(ErrorFilter)
@@ -11,11 +12,10 @@ export class HelpCommand {
     description: 'Помощь по командам',
   })
   async help(@Context() [interaction]: SlashCommandContext) {
-    const embed = new EmbedBuilder()
-      .setColor('#FF8000')
+    const embed = MAIN_EMBED()
       .setAuthor({ name: 'Помощь по командам' })
       .setDescription(
-        '</play:1373748231938510959> - поиск трека по ссылке/названию\n</stop:1373748231938510960> - очистить очередь треков и отключить бота\n</pause:1373748231938510961> - поставить трек на паузу/убрать с паузы\n</queue:1373748231938510964> - показать очередь треков\n</skip:1373748231938510962> - пропустить трек в очереди\n</previous:1374043747226226769> - включить предыдущий трек',
+        '</play:1374107913802743910> - поиск трека по ссылке/названию\n</stop:1374107913802743911> - очистить очередь треков и отключить бота\n</pause:1374107913802743912> - поставить трек на паузу/убрать с паузы\n</queue:1374107913802743916> - показать очередь треков\n</skip:1374107913802743913> - пропустить трек в очереди\n</previous:1374107913802743914> - включить предыдущий трек',
       );
 
     await interaction.reply({

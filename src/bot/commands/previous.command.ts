@@ -1,8 +1,9 @@
 import { PlayerManager } from '@necord/lavalink';
 import { Injectable, UseFilters } from '@nestjs/common';
-import { EmbedBuilder, MessageFlags } from 'discord.js';
+import { MessageFlags } from 'discord.js';
 import { Context, SlashCommand, SlashCommandContext } from 'necord';
 import { ErrorFilter } from '../filters/error.filter';
+import { ERROR_EMBED, MAIN_EMBED } from '../utils/embeds.util';
 
 @Injectable()
 @UseFilters(ErrorFilter)
@@ -17,10 +18,7 @@ export class PreviousCommand {
     const player = this.playerManager.get(interaction.guild.id);
 
     if (!player) {
-      const embed = new EmbedBuilder()
-        .setColor('#ff0000')
-        .setAuthor({ name: 'Ошибка' })
-        .setDescription('Бот не запущен.');
+      const embed = ERROR_EMBED().setDescription('Бот не запущен.');
 
       return interaction.reply({
         embeds: [embed],
@@ -31,10 +29,7 @@ export class PreviousCommand {
     const member = interaction.guild.members.cache.get(interaction.user.id);
 
     if (player.voiceChannelId !== member.voice.channelId) {
-      const embed = new EmbedBuilder()
-        .setColor('#ff0000')
-        .setAuthor({ name: 'Ошибка' })
-        .setDescription('Войдите в канал с ботом.');
+      const embed = ERROR_EMBED().setDescription('Войдите в канал с ботом.');
 
       return interaction.reply({
         embeds: [embed],
@@ -45,10 +40,7 @@ export class PreviousCommand {
     const previousTrack = await player.queue.shiftPrevious();
 
     if (!previousTrack) {
-      const embed = new EmbedBuilder()
-        .setColor('#ff0000')
-        .setAuthor({ name: 'Ошибка' })
-        .setDescription('Предыдущего трека нет.');
+      const embed = ERROR_EMBED().setDescription('Предыдущего трека нет.');
 
       return interaction.reply({
         embeds: [embed],
@@ -58,11 +50,9 @@ export class PreviousCommand {
 
     await player.play({ clientTrack: previousTrack });
 
-    const embed = new EmbedBuilder()
-      .setColor('#FF8000')
-      .setDescription(
-        `Трек [**${previousTrack.info.title} от ${previousTrack.info.author}**](${previousTrack.info.uri}) включен заново.`,
-      );
+    const embed = MAIN_EMBED().setDescription(
+      `Трек [**${previousTrack.info.title} от ${previousTrack.info.author}**](${previousTrack.info.uri}) включен заново.`,
+    );
 
     await interaction.reply({ embeds: [embed] });
   }

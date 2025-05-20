@@ -27,7 +27,10 @@ import { StopCommand } from './commands/stop.command';
           IntentsBitField.Flags.MessageContent,
           IntentsBitField.Flags.DirectMessages,
         ],
-        development: [configService.get<string>('DISCORD_DEV_GUILD_ID')],
+        development:
+          configService.get<string>('NODE_ENV') === 'development'
+            ? [configService.get<string>('DISCORD_DEV_GUILD_ID')]
+            : undefined,
       }),
     }),
     NecordLavalinkModule.forRootAsync({

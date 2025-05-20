@@ -1,6 +1,6 @@
 import { NecordLavalinkService, PlayerManager } from '@necord/lavalink';
 import { Injectable, UseFilters } from '@nestjs/common';
-import { EmbedBuilder, MessageFlags } from 'discord.js';
+import { MessageFlags } from 'discord.js';
 import {
   Context,
   Options,
@@ -10,6 +10,7 @@ import {
 } from 'necord';
 import { ErrorFilter } from '../filters/error.filter';
 import { SOURCES } from '../utils/constants.util';
+import { ERROR_EMBED, MAIN_EMBED } from '../utils/embeds.util';
 import { formatMilliseconds } from '../utils/format.util';
 
 export class PlayCommandOptions {
@@ -54,10 +55,7 @@ export class PlayCommand {
     const member = interaction.guild.members.cache.get(interaction.user.id);
 
     if (!member.voice.channel) {
-      const embed = new EmbedBuilder()
-        .setColor('#ff0000')
-        .setAuthor({ name: 'Ошибка' })
-        .setDescription('Войдите в канал.');
+      const embed = ERROR_EMBED().setDescription('Войдите в канал.');
 
       return interaction.reply({
         embeds: [embed],
@@ -88,10 +86,9 @@ export class PlayCommand {
 
       await player.connect();
 
-      !player.playing && (await player.play());
+      if (!player.playing) await player.play();
 
-      const embed = new EmbedBuilder()
-        .setColor('#FF8000')
+      const embed = MAIN_EMBED()
         .setTitle(currentTrack.info.title)
         .setAuthor({ name: 'Трек добавлен' })
         .setDescription(currentTrack.info.author)
@@ -134,10 +131,7 @@ export class PlayCommand {
           break;
       }
 
-      const embed = new EmbedBuilder()
-        .setColor('#ff0000')
-        .setAuthor({ name: 'Ошибка' })
-        .setDescription(description);
+      const embed = ERROR_EMBED().setDescription(description);
 
       await interaction.reply({
         embeds: [embed],

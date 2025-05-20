@@ -1,8 +1,9 @@
 import { PlayerManager } from '@necord/lavalink';
 import { Injectable, UseFilters } from '@nestjs/common';
-import { EmbedBuilder, MessageFlags } from 'discord.js';
+import { MessageFlags } from 'discord.js';
 import { Context, SlashCommand, SlashCommandContext } from 'necord';
 import { ErrorFilter } from '../filters/error.filter';
+import { ERROR_EMBED, MAIN_EMBED } from '../utils/embeds.util';
 
 @Injectable()
 @UseFilters(ErrorFilter)
@@ -17,10 +18,7 @@ export class PauseCommand {
     const player = this.playerManager.get(interaction.guild.id);
 
     if (!player) {
-      const embed = new EmbedBuilder()
-        .setColor('#ff0000')
-        .setAuthor({ name: 'Ошибка' })
-        .setDescription('Бот не запущен.');
+      const embed = ERROR_EMBED().setDescription('Бот не запущен.');
 
       return interaction.reply({
         embeds: [embed],
@@ -31,10 +29,7 @@ export class PauseCommand {
     const member = interaction.guild.members.cache.get(interaction.user.id);
 
     if (player.voiceChannelId !== member.voice.channelId) {
-      const embed = new EmbedBuilder()
-        .setColor('#ff0000')
-        .setAuthor({ name: 'Ошибка' })
-        .setDescription('Войдите в канал с ботом.');
+      const embed = ERROR_EMBED().setDescription('Войдите в канал с ботом.');
 
       return interaction.reply({
         embeds: [embed],
@@ -46,11 +41,9 @@ export class PauseCommand {
 
     player.paused ? await player.resume() : await player.pause();
 
-    const embed = new EmbedBuilder()
-      .setColor('#FF8000')
-      .setDescription(
-        `Трек [**${currentTrack.info.title} от ${currentTrack.info.author}**](${currentTrack.info.uri}) ${player.paused ? 'поставлен на паузу' : 'убран с паузы'}. `,
-      );
+    const embed = MAIN_EMBED().setDescription(
+      `Трек [**${currentTrack.info.title} от ${currentTrack.info.author}**](${currentTrack.info.uri}) ${player.paused ? 'поставлен на паузу' : 'убран с паузы'}. `,
+    );
 
     await interaction.reply({ embeds: [embed] });
   }
