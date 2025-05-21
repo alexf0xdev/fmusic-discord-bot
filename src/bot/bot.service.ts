@@ -48,7 +48,7 @@ export class BotService {
   }
 
   @OnLavalinkManager('trackStart')
-  async onTrackEnd(
+  async onTrackStart(
     @Context() [player]: LavalinkManagerContextOf<'trackStart'>,
   ) {
     const timeout = this.timeouts.get(player.guildId);
@@ -60,9 +60,7 @@ export class BotService {
   }
 
   @OnLavalinkManager('queueEnd')
-  async onPlayerQueueEmptyEnd(
-    @Context() [player]: LavalinkManagerContextOf<'queueEnd'>,
-  ) {
+  async onQueueEnd(@Context() [player]: LavalinkManagerContextOf<'queueEnd'>) {
     const timeout = this.timeouts.get(player.guildId);
 
     if (timeout) this.timeouts.delete(player.guildId);
