@@ -6,7 +6,7 @@ import {
   PlayerManager,
 } from '@necord/lavalink';
 import { Injectable, Logger, UseFilters } from '@nestjs/common';
-import { ActivityType, GuildManager } from 'discord.js';
+import { ActivityType, Collection, GuildManager } from 'discord.js';
 import { Context, ContextOf, On, Once } from 'necord';
 import { ErrorFilter } from './filters/error.filter';
 import { MAIN_EMBED } from './utils/embeds.util';
@@ -20,6 +20,8 @@ export class BotService {
   ) {}
 
   private logger = new Logger(BotService.name);
+
+  private timeouts = new Collection<string, NodeJS.Timeout>();
 
   @Once('ready')
   async onReady(@Context() [client]: ContextOf<'ready'>) {
@@ -45,11 +47,27 @@ export class BotService {
     this.logger.log(`Player created at ${player.guildId}`);
   }
 
+  @OnLavalinkManager('trackStart')
+  async onTrackEnd(
+    @Context() [player]: LavalinkManagerContextOf<'trackStart'>,
+  ) {
+    const timeout = this.timeouts.get(player.guildId);
+
+    if (timeout) {
+      clearTimeout(timeout);
+      this.timeouts.delete(player.guildId);
+    }
+  }
+
   @OnLavalinkManager('queueEnd')
   async onPlayerQueueEmptyEnd(
     @Context() [player]: LavalinkManagerContextOf<'queueEnd'>,
   ) {
-    setTimeout(async () => {
+    const timeout = this.timeouts.get(player.guildId);
+
+    if (timeout) this.timeouts.delete(player.guildId);
+
+    const newTimeout = setTimeout(async () => {
       await player.destroy();
 
       const guild = this.guildManager.cache.get(player.guildId);
@@ -59,11 +77,13 @@ export class BotService {
       if (!textChannel.isTextBased()) return;
 
       const embed = MAIN_EMBED().setDescription(
-        'В канале ничего не происходит больше 5 минут - очередь очищена, бот отключен.',
+        'Очередь бота неактивна больше 5 минут - очередь очищена, бот отключен.',
       );
 
-      textChannel.send({ embeds: [embed] });
+      await textChannel.send({ embeds: [embed] });
     }, 300000);
+
+    this.timeouts.set(player.guildId, newTimeout);
   }
 
   @On('voiceStateUpdate')
@@ -79,7 +99,7 @@ export class BotService {
     if (!voiceChannelMembers.size) {
       const player = this.playerManager.get(voiceChannel.guildId);
 
-      if (!player) return;
+      if (!player || voiceChannel.id !== player.voiceChannelId) return;
 
       const textChannel = voiceChannel.guild.channels.cache.get(
         player.textChannelId,
