@@ -24,9 +24,7 @@ import { StopCommand } from './commands/stop.command';
           IntentsBitField.Flags.Guilds,
           IntentsBitField.Flags.GuildVoiceStates,
           IntentsBitField.Flags.GuildMessages,
-          IntentsBitField.Flags.GuildMessageReactions,
           IntentsBitField.Flags.MessageContent,
-          IntentsBitField.Flags.DirectMessages,
         ],
         development:
           configService.get<string>('NODE_ENV') === 'development'

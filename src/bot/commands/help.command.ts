@@ -1,11 +1,9 @@
-import { Injectable, UseFilters } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { MessageFlags } from 'discord.js';
 import { Context, SlashCommand, SlashCommandContext } from 'necord';
-import { ErrorFilter } from '../filters/error.filter';
 import { MAIN_EMBED } from '../utils/embeds.util';
 
 @Injectable()
-@UseFilters(ErrorFilter)
 export class HelpCommand {
   @SlashCommand({
     name: 'help',

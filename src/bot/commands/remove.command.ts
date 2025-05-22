@@ -1,5 +1,5 @@
 import { PlayerManager } from '@necord/lavalink';
-import { Injectable, UseFilters } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { MessageFlags } from 'discord.js';
 import {
   Context,
@@ -8,7 +8,6 @@ import {
   SlashCommand,
   SlashCommandContext,
 } from 'necord';
-import { ErrorFilter } from '../filters/error.filter';
 import { ERROR_EMBED, MAIN_EMBED } from '../utils/embeds.util';
 
 export class RemoveCommandOptions {
@@ -22,7 +21,6 @@ export class RemoveCommandOptions {
 }
 
 @Injectable()
-@UseFilters(ErrorFilter)
 export class RemoveCommand {
   constructor(private playerManager: PlayerManager) {}
 

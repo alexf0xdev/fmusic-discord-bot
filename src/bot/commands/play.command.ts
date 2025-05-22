@@ -1,5 +1,5 @@
 import { NecordLavalinkService, PlayerManager } from '@necord/lavalink';
-import { Injectable, UseFilters } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { MessageFlags } from 'discord.js';
 import {
   Context,
@@ -8,7 +8,6 @@ import {
   SlashCommandContext,
   StringOption,
 } from 'necord';
-import { ErrorFilter } from '../filters/error.filter';
 import { SOURCES } from '../utils/constants.util';
 import { ERROR_EMBED, MAIN_EMBED } from '../utils/embeds.util';
 import { formatMilliseconds } from '../utils/format.util';
@@ -37,7 +36,6 @@ export class PlayCommandOptions {
 }
 
 @Injectable()
-@UseFilters(ErrorFilter)
 export class PlayCommand {
   constructor(
     private playerManager: PlayerManager,

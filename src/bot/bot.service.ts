@@ -5,14 +5,12 @@ import {
   OnNodeManager,
   PlayerManager,
 } from '@necord/lavalink';
-import { Injectable, Logger, UseFilters } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { ActivityType, Collection, GuildManager } from 'discord.js';
 import { Context, ContextOf, On, Once } from 'necord';
-import { ErrorFilter } from './filters/error.filter';
 import { MAIN_EMBED } from './utils/embeds.util';
 
 @Injectable()
-@UseFilters(ErrorFilter)
 export class BotService {
   constructor(
     private guildManager: GuildManager,
@@ -33,6 +31,11 @@ export class BotService {
   @On('warn')
   onWarn(@Context() [message]: ContextOf<'warn'>) {
     this.logger.warn(message);
+  }
+
+  @On('error')
+  onError(@Context() [message]: ContextOf<'error'>) {
+    this.logger.error(message);
   }
 
   @OnNodeManager('connect')
