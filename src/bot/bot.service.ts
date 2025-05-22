@@ -29,18 +29,18 @@ export class BotService {
   }
 
   @On('warn')
-  onWarn(@Context() [message]: ContextOf<'warn'>) {
-    this.logger.warn(message);
+  onWarn(@Context() [info]: ContextOf<'warn'>) {
+    this.logger.warn(info);
   }
 
   @On('error')
-  onError(@Context() [message]: ContextOf<'error'>) {
-    this.logger.error(message);
+  onError(@Context() [error]: ContextOf<'error'>) {
+    this.logger.error(error);
   }
 
   @OnNodeManager('connect')
   onReadyLavalink(@Context() [node]: NodeManagerContextOf<'connect'>) {
-    this.logger.log(`Node: ${node.options.id} Connected`);
+    this.logger.log(`Node: ${node.options.id} connected`);
   }
 
   @OnLavalinkManager('playerCreate')

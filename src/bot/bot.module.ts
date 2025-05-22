@@ -22,9 +22,8 @@ import { StopCommand } from './commands/stop.command';
         token: configService.get<string>('BOT_TOKEN'),
         intents: [
           IntentsBitField.Flags.Guilds,
-          IntentsBitField.Flags.GuildVoiceStates,
           IntentsBitField.Flags.GuildMessages,
-          IntentsBitField.Flags.MessageContent,
+          IntentsBitField.Flags.GuildVoiceStates,
         ],
         development:
           configService.get<string>('NODE_ENV') === 'development'
