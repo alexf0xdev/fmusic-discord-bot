@@ -9,6 +9,7 @@ import { PauseCommand } from './commands/pause.command';
 import { PlayCommand } from './commands/play.command';
 import { PreviousCommand } from './commands/previous.command';
 import { QueueCommand } from './commands/queue.command';
+import { RemoveCommand } from './commands/remove.command';
 import { SkipCommand } from './commands/skip.command';
 import { StopCommand } from './commands/stop.command';
 
@@ -57,6 +58,7 @@ import { StopCommand } from './commands/stop.command';
     PreviousCommand,
     QueueCommand,
     HelpCommand,
+    RemoveCommand,
   ],
 })
 export class BotModule {}

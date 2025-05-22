@@ -46,7 +46,7 @@ export class PlayCommand {
 
   @SlashCommand({
     name: 'play',
-    description: 'Поиск трека по ссылке/названию',
+    description: 'Найти трек по ссылке/названию',
   })
   async play(
     @Context() [interaction]: SlashCommandContext,
