@@ -75,6 +75,15 @@ export class PlayCommand {
         });
       }
 
+      if (player.voiceChannelId !== member.voice.channelId) {
+        const embed = ERROR_EMBED().setDescription('Войдите в канал с ботом.');
+
+        return interaction.reply({
+          embeds: [embed],
+          flags: MessageFlags.Ephemeral,
+        });
+      }
+
       const result = await player.search(
         { query, source },
         interaction.member.user.id,

@@ -45,6 +45,17 @@ export class RemoveCommand {
       });
     }
 
+    const member = interaction.guild.members.cache.get(interaction.user.id);
+
+    if (player.voiceChannelId !== member.voice.channelId) {
+      const embed = ERROR_EMBED().setDescription('Войдите в канал с ботом.');
+
+      return interaction.reply({
+        embeds: [embed],
+        flags: MessageFlags.Ephemeral,
+      });
+    }
+
     const index = trackId - 2;
 
     const removedTrack = player.queue.tracks[index];
