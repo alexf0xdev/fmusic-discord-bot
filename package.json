@@ -1,10 +1,10 @@
 {
   "name": "fmusic-discord-bot",
-  "version": "0.0.1",
-  "description": "",
-  "author": "",
+  "version": "1.0.0",
+  "description": "Discord music bot using Necord, lavalink-client and build with Nest.js.",
+  "author": "alexf0xdev",
   "private": true,
-  "license": "UNLICENSED",
+  "license": "MIT",
   "scripts": {
     "build": "nest build && pnpm sentry:sourcemaps",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
