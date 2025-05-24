@@ -61,7 +61,7 @@ export class QueueCommand {
       .setAuthor({ name: 'Очередь треков' })
       .setDescription(
         tracks.length
-          ? player.queue.tracks
+          ? tracks
               .map(
                 (track, index) =>
                   `${index + 2}. [**${track.info.title} от ${track.info.author}**](${track.info.uri})`,
