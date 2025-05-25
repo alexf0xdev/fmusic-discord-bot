@@ -8,7 +8,7 @@ import {
   SlashCommandContext,
   StringOption,
 } from 'necord';
-import { SOURCES } from '../utils/constants.util';
+import { SOURCES } from '../bot.constants';
 import { ERROR_EMBED, MAIN_EMBED } from '../utils/embeds.util';
 import { formatMilliseconds } from '../utils/format.util';
 

@@ -2,7 +2,7 @@ import { PlayerManager } from '@necord/lavalink';
 import { Injectable } from '@nestjs/common';
 import { MessageFlags } from 'discord.js';
 import { Context, SlashCommand, SlashCommandContext } from 'necord';
-import { SOURCES } from '../utils/constants.util';
+import { SOURCES } from '../bot.constants';
 import { ERROR_EMBED, MAIN_EMBED } from '../utils/embeds.util';
 import { formatMilliseconds } from '../utils/format.util';
 
