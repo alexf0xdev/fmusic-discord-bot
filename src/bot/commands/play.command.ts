@@ -120,25 +120,7 @@ export class PlayCommand {
 
       await interaction.reply({ embeds: [embed] });
     } catch (error) {
-      let description: string;
-
-      switch (true) {
-        case error.message.includes(
-          'Query / Link Provided for this Source but Lavalink Node has not',
-        ):
-          description = 'Сервис не поддерживается.';
-          break;
-        case error.message.includes(
-          'There is no Track in the Queue, nor provided in the PlayOptions',
-        ):
-          description = 'Неверная ссылка.';
-          break;
-        default:
-          description = 'Произошла неизвестная ошибка.';
-          break;
-      }
-
-      const embed = ERROR_EMBED().setDescription(description);
+      const embed = ERROR_EMBED().setDescription('Произошла ошибка.');
 
       await interaction.reply({
         embeds: [embed],
