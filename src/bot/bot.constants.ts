@@ -1,4 +1,8 @@
-export const SOURCES = {
+import { SourceNames } from 'lavalink-client/dist/types';
+
+export const SOURCES: Partial<
+  Record<SourceNames, { name: string; iconUrl: string }>
+> = {
   youtube: {
     name: 'YouTube',
     iconUrl: 'https://drive.google.com/uc?id=1xT26cRDc1-AsjV6934bsJroWFqS4HOxp',

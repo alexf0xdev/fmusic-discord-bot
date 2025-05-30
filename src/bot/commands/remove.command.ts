@@ -73,9 +73,6 @@ export class RemoveCommand {
       `Трек [**${removedTrack.info.title} от ${removedTrack.info.author}**](${removedTrack.info.uri}) убран из очереди.`,
     );
 
-    await interaction.reply({
-      embeds: [embed],
-      flags: MessageFlags.Ephemeral,
-    });
+    await interaction.reply({ embeds: [embed] });
   }
 }

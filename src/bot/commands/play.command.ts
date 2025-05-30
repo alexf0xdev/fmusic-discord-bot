@@ -95,6 +95,8 @@ export class PlayCommand {
 
       if (!player.playing) await player.play();
 
+      const sourceInfo = SOURCES[currentTrack.info.sourceName];
+
       const embed = MAIN_EMBED()
         .setTitle(currentTrack.info.title)
         .setAuthor({ name: 'Трек добавлен' })
@@ -113,10 +115,7 @@ export class PlayCommand {
             inline: true,
           },
         )
-        .setFooter({
-          text: SOURCES[currentTrack.info.sourceName].name,
-          iconURL: SOURCES[currentTrack.info.sourceName].iconUrl,
-        });
+        .setFooter({ text: sourceInfo.name, iconURL: sourceInfo.iconUrl });
 
       await interaction.reply({ embeds: [embed] });
     } catch (error) {
