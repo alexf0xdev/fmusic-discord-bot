@@ -15,7 +15,7 @@ import { formatMilliseconds } from '../utils/format.util';
 export class PlayCommandOptions {
   @StringOption({
     name: 'запрос',
-    description: 'Ссылка или название трека',
+    description: 'Ссылка или название трека/плейлиста',
     required: true,
     max_length: 500,
   })
@@ -23,7 +23,7 @@ export class PlayCommandOptions {
 
   @StringOption({
     name: 'сервис',
-    description: 'Сервис для поиска трека',
+    description: 'Сервис для поиска трека/плейлиста',
     choices: [
       { name: 'YouTube', value: 'youtube' },
       { name: 'Spotify', value: 'spotify' },
@@ -44,7 +44,7 @@ export class PlayCommand {
 
   @SlashCommand({
     name: 'play',
-    description: 'Найти трек по ссылке/названию',
+    description: 'Найти трек/плейлист по ссылке/названию',
   })
   async play(
     @Context() [interaction]: SlashCommandContext,
@@ -104,7 +104,9 @@ export class PlayCommand {
 
       if (!player.playing) await player.play();
 
-      const sourceInfo = SOURCES[track.info.sourceName];
+      const sourceInfo = SOURCES[track?.info.sourceName];
+
+      console.log(playlist.uri);
 
       const embed = isPlaylist
         ? MAIN_EMBED()
@@ -113,15 +115,22 @@ export class PlayCommand {
             .setDescription(playlist.author)
             .setURL(playlist.uri)
             .setThumbnail(playlist.thumbnail)
-            .addFields({
-              name: 'Длительность',
-              value: formatMilliseconds(playlist.duration),
-              inline: true,
-            })
+            .addFields(
+              {
+                name: 'Длительность',
+                value: formatMilliseconds(playlist.duration),
+                inline: true,
+              },
+              {
+                name: 'Добавлено в очередь',
+                value: `${result.tracks.length + 1}`,
+                inline: true,
+              },
+            )
             .setFooter({ text: sourceInfo.name, iconURL: sourceInfo.iconUrl })
         : MAIN_EMBED()
             .setTitle(track.info.title)
-            .setAuthor({ name: 'Плейлист добавлен' })
+            .setAuthor({ name: 'Трек добавлен' })
             .setDescription(track.info.author)
             .setURL(track.info.uri)
             .setThumbnail(track.info.artworkUrl)
