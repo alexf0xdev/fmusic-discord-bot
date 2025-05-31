@@ -106,8 +106,6 @@ export class PlayCommand {
 
       const sourceInfo = SOURCES[track?.info.sourceName];
 
-      console.log(playlist.uri);
-
       const embed = isPlaylist
         ? MAIN_EMBED()
             .setTitle(playlist.title)
