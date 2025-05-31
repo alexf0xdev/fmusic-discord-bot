@@ -35,12 +35,12 @@ export class PauseCommand {
       });
     }
 
-    const currentTrack = player.queue.current;
+    const track = player.queue.current;
 
     player.paused ? await player.resume() : await player.pause();
 
     const embed = MAIN_EMBED().setDescription(
-      `Трек [**${currentTrack.info.title} от ${currentTrack.info.author}**](${currentTrack.info.uri}) ${player.paused ? 'поставлен на паузу' : 'убран с паузы'}. `,
+      `Трек [**${track.info.title} от ${track.info.author}**](${track.info.uri}) ${player.paused ? 'поставлен на паузу' : 'убран с паузы'}. `,
     );
 
     await interaction.reply({ embeds: [embed] });

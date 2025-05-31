@@ -35,9 +35,9 @@ export class PreviousCommand {
       });
     }
 
-    const previousTrack = await player.queue.shiftPrevious();
+    const track = await player.queue.shiftPrevious();
 
-    if (!previousTrack) {
+    if (!track) {
       const embed = ERROR_EMBED().setDescription('Предыдущего трека нет.');
 
       return interaction.reply({
@@ -46,10 +46,10 @@ export class PreviousCommand {
       });
     }
 
-    await player.play({ clientTrack: previousTrack });
+    await player.play({ clientTrack: track });
 
     const embed = MAIN_EMBED().setDescription(
-      `Трек [**${previousTrack.info.title} от ${previousTrack.info.author}**](${previousTrack.info.uri}) включен заново.`,
+      `Трек [**${track.info.title} от ${track.info.author}**](${track.info.uri}) включен заново.`,
     );
 
     await interaction.reply({ embeds: [embed] });

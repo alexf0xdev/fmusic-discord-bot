@@ -82,40 +82,62 @@ export class PlayCommand {
         });
       }
 
-      const result = await player.search(
-        { query, source },
-        interaction.member.user.id,
-      );
+      const result = await player.search({ query, source }, member.id);
 
-      const currentTrack = result.tracks[0];
+      if (!result || !result.tracks?.length) {
+        const embed = ERROR_EMBED().setDescription('Трек не найден.');
 
-      await player.queue.add(currentTrack);
+        return interaction.reply({
+          embeds: [embed],
+          flags: MessageFlags.Ephemeral,
+        });
+      }
+
+      const track = result.tracks[0];
+      const playlist = result.playlist;
+
+      const isPlaylist = result.loadType === 'playlist';
+
+      await player.queue.add(isPlaylist ? result.tracks : track);
 
       await player.connect();
 
       if (!player.playing) await player.play();
 
-      const sourceInfo = SOURCES[currentTrack.info.sourceName];
+      const sourceInfo = SOURCES[track.info.sourceName];
 
-      const embed = MAIN_EMBED()
-        .setTitle(currentTrack.info.title)
-        .setAuthor({ name: 'Трек добавлен' })
-        .setDescription(currentTrack.info.author)
-        .setURL(currentTrack.info.uri)
-        .setThumbnail(currentTrack.info.artworkUrl)
-        .addFields(
-          {
-            name: 'Длительность',
-            value: formatMilliseconds(currentTrack.info.duration),
-            inline: true,
-          },
-          {
-            name: 'В очереди',
-            value: `${player.queue.tracks.length + 1}`,
-            inline: true,
-          },
-        )
-        .setFooter({ text: sourceInfo.name, iconURL: sourceInfo.iconUrl });
+      const embed = isPlaylist
+        ? MAIN_EMBED()
+            .setTitle(playlist.title)
+            .setAuthor({ name: 'Плейлист добавлен' })
+            .setDescription(playlist.author)
+            .setURL(playlist.uri)
+            .setThumbnail(playlist.thumbnail)
+            .addFields({
+              name: 'Длительность',
+              value: formatMilliseconds(playlist.duration),
+              inline: true,
+            })
+            .setFooter({ text: sourceInfo.name, iconURL: sourceInfo.iconUrl })
+        : MAIN_EMBED()
+            .setTitle(track.info.title)
+            .setAuthor({ name: 'Плейлист добавлен' })
+            .setDescription(track.info.author)
+            .setURL(track.info.uri)
+            .setThumbnail(track.info.artworkUrl)
+            .addFields(
+              {
+                name: 'Длительность',
+                value: formatMilliseconds(track.info.duration),
+                inline: true,
+              },
+              {
+                name: 'В очереди',
+                value: `${player.queue.tracks.length + 1}`,
+                inline: true,
+              },
+            )
+            .setFooter({ text: sourceInfo.name, iconURL: sourceInfo.iconUrl });
 
       await interaction.reply({ embeds: [embed] });
     } catch (error) {

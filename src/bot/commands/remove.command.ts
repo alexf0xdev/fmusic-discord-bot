@@ -56,9 +56,9 @@ export class RemoveCommand {
 
     const index = trackId - 2;
 
-    const removedTrack = player.queue.tracks[index];
+    const track = player.queue.tracks[index];
 
-    if (!removedTrack) {
+    if (!track) {
       const embed = ERROR_EMBED().setDescription('Трек не найден.');
 
       return interaction.reply({
@@ -70,7 +70,7 @@ export class RemoveCommand {
     await player.queue.remove(index);
 
     const embed = MAIN_EMBED().setDescription(
-      `Трек [**${removedTrack.info.title} от ${removedTrack.info.author}**](${removedTrack.info.uri}) убран из очереди.`,
+      `Трек [**${track.info.title} от ${track.info.author}**](${track.info.uri}) убран из очереди.`,
     );
 
     await interaction.reply({ embeds: [embed] });

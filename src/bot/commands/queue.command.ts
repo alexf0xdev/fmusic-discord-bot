@@ -26,19 +26,22 @@ export class QueueCommand {
       });
     }
 
-    const currentTrack = player.queue.current;
+    const tracks = player.queue.tracks;
+    const track = player.queue.current;
 
-    const currentTrackEmbed = currentTrack
+    const sourceInfo = SOURCES[track.info.sourceName];
+
+    const currentTrackEmbed = track
       ? MAIN_EMBED()
-          .setTitle(currentTrack.info.title)
+          .setTitle(track.info.title)
           .setAuthor({ name: 'Сейчас играет' })
-          .setDescription(currentTrack.info.author)
-          .setURL(currentTrack.info.uri)
-          .setThumbnail(currentTrack.info.artworkUrl)
+          .setDescription(track.info.author)
+          .setURL(track.info.uri)
+          .setThumbnail(track.info.artworkUrl)
           .addFields(
             {
               name: 'Длительность',
-              value: `${formatMilliseconds(player.lastPosition)} из ${formatMilliseconds(currentTrack.info.duration)}`,
+              value: `${formatMilliseconds(player.lastPosition)} из ${formatMilliseconds(track.info.duration)}`,
               inline: true,
             },
             {
@@ -47,15 +50,10 @@ export class QueueCommand {
               inline: true,
             },
           )
-          .setFooter({
-            text: SOURCES[currentTrack.info.sourceName].name,
-            iconURL: SOURCES[currentTrack.info.sourceName].iconUrl,
-          })
+          .setFooter({ text: sourceInfo.name, iconURL: sourceInfo.iconUrl })
       : MAIN_EMBED()
           .setAuthor({ name: 'Сейчас играет' })
           .setDescription('Сейчас ничего не играет.');
-
-    const tracks = player.queue.tracks;
 
     const queueListEmbed = MAIN_EMBED()
       .setAuthor({ name: 'Очередь треков' })
