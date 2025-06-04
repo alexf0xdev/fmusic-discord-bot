@@ -10,7 +10,7 @@ importers:
     dependencies:
       '@necord/lavalink':
         specifier: ^1.1.4
-        version: 1.1.4(@nestjs/common@11.1.1(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.1)(discord.js@14.19.3)(lavalink-client@2.5.3)(necord@6.8.14(@nestjs/common@11.1.1(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.1)(discord-api-types@0.38.8)(discord.js@14.19.3)(reflect-metadata@0.2.2)(rxjs@7.8.2))(reflect-metadata@0.2.2)(rxjs@7.8.2)
+        version: 1.1.4(@nestjs/common@11.1.1(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.1)(discord.js@14.19.3)(lavalink-client@2.5.6)(necord@6.8.14(@nestjs/common@11.1.1(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.1)(discord-api-types@0.38.8)(discord.js@14.19.3)(reflect-metadata@0.2.2)(rxjs@7.8.2))(reflect-metadata@0.2.2)(rxjs@7.8.2)
       '@necord/pagination':
         specifier: ^2.1.0
         version: 2.1.0(@nestjs/common@11.1.1(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.1)(discord.js@14.19.3)(necord@6.8.14(@nestjs/common@11.1.1(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.1)(discord-api-types@0.38.8)(discord.js@14.19.3)(reflect-metadata@0.2.2)(rxjs@7.8.2))(reflect-metadata@0.2.2)(rxjs@7.8.2)
@@ -42,8 +42,8 @@ importers:
         specifier: ^1.0.6
         version: 1.0.6
       lavalink-client:
-        specifier: ^2.5.3
-        version: 2.5.3
+        specifier: ^2.5.6
+        version: 2.5.6
       necord:
         specifier: ^6.8.14
         version: 6.8.14(@nestjs/common@11.1.1(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.1)(discord-api-types@0.38.8)(discord.js@14.19.3)(reflect-metadata@0.2.2)(rxjs@7.8.2)
@@ -2448,8 +2448,8 @@ packages:
     resolution: {integrity: sha512-eTIzlVOSUR+JxdDFepEYcBMtZ9Qqdef+rnzWdRZuMbOywu5tO2w2N7rqjoANZ5k9vywhL6Br1VRjUIgTQx4E8w==}
     engines: {node: '>=6'}
 
-  lavalink-client@2.5.3:
-    resolution: {integrity: sha512-4R87S7Xti3TSvA/vlLgu0sQWoz6FtetPzilkgLH1J9iHAXua7bSh9NX2gVaoPuClD6AANPyxy3nbph2IVag5KA==}
+  lavalink-client@2.5.6:
+    resolution: {integrity: sha512-RkYDIuwj1lRY8eKJ+oyz/EItmAjXhjQY6Cq7njIDiXggzzcc3eev05OiLz1GYiy/nXjmLxmMdu3nLBfyODk9bw==}
     engines: {bun: '>=1.1.27', node: '>=18.0.0'}
 
   leven@3.1.0:
@@ -4142,12 +4142,12 @@ snapshots:
 
   '@lukeed/csprng@1.1.0': {}
 
-  '@necord/lavalink@1.1.4(@nestjs/common@11.1.1(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.1)(discord.js@14.19.3)(lavalink-client@2.5.3)(necord@6.8.14(@nestjs/common@11.1.1(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.1)(discord-api-types@0.38.8)(discord.js@14.19.3)(reflect-metadata@0.2.2)(rxjs@7.8.2))(reflect-metadata@0.2.2)(rxjs@7.8.2)':
+  '@necord/lavalink@1.1.4(@nestjs/common@11.1.1(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.1)(discord.js@14.19.3)(lavalink-client@2.5.6)(necord@6.8.14(@nestjs/common@11.1.1(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.1)(discord-api-types@0.38.8)(discord.js@14.19.3)(reflect-metadata@0.2.2)(rxjs@7.8.2))(reflect-metadata@0.2.2)(rxjs@7.8.2)':
     dependencies:
       '@nestjs/common': 11.1.1(reflect-metadata@0.2.2)(rxjs@7.8.2)
       '@nestjs/core': 11.1.1(@nestjs/common@11.1.1(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/platform-express@11.1.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)
       discord.js: 14.19.3
-      lavalink-client: 2.5.3
+      lavalink-client: 2.5.6
       necord: 6.8.14(@nestjs/common@11.1.1(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.1)(discord-api-types@0.38.8)(discord.js@14.19.3)(reflect-metadata@0.2.2)(rxjs@7.8.2)
       reflect-metadata: 0.2.2
       rxjs: 7.8.2
@@ -6417,7 +6417,7 @@ snapshots:
 
   kleur@3.0.3: {}
 
-  lavalink-client@2.5.3:
+  lavalink-client@2.5.6:
     dependencies:
       tslib: 2.8.1
       ws: 8.18.2

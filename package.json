@@ -32,7 +32,7 @@
     "@sentry/profiling-node": "^9.26.0",
     "discord.js": "^14.19.3",
     "discordjs-v14-pagination": "^1.0.6",
-    "lavalink-client": "^2.5.3",
+    "lavalink-client": "^2.5.6",
     "necord": "^6.8.14",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.2"
