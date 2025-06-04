@@ -1,18 +1,19 @@
-version: '3.8'
 services:
   fmusic-discord-bot:
     container_name: fmusic-discord-bot
-    image: ghcr.io/alexf0xdev/fmusic-discord-bot
+    image: ghcr.io/alexf0xdev/fmusic-discord-bot:latest
     restart: unless-stopped
     environment:
-      BOT_TOKEN: 'discord bot token'
-      LAVALINK_HOST: 'lavalink host'
-      LAVALINK_PORT: 'lavalink port'
-      LAVALINK_PASSWORD: 'lavalink password'
-      SENTRY_DSN: 'sentry dsn'
+      BOT_TOKEN: '<discord bot token>'
+      LAVALINK_HOST: '<lavalink host>'
+      LAVALINK_PORT: '<lavalink port>'
+      LAVALINK_PASSWORD: '<lavalink password>'
+      SENTRY_DSN: '<sentry dsn>'
   watchtower:
+    container_name: watchtower
     image: containrrr/watchtower
+    environment:
+      WATCHTOWER_CLEANUP: true
+      WATCHTOWER_POLL_INTERVAL: 300
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - /root/.docker/config.json:/config.json
-    command: --interval 30
