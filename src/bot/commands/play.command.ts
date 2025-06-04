@@ -82,14 +82,7 @@ export class PlayCommand {
         });
       }
 
-      const result = await player.search(
-        {
-          query:
-            'https://www.youtube.com/watch?v=Oa_RSwwpPaA&list=PLDIoUOhQQPlXr63I_vwF9GD8sAKh77dWU',
-          source,
-        },
-        member.id,
-      );
+      const result = await player.search({ query, source }, member.id);
 
       if (!result || !result.tracks?.length) {
         const embed = ERROR_EMBED().setDescription('Трек не найден.');
