@@ -33,7 +33,7 @@ jobs:
           SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
         with:
           environment: production
-          version: 'v1.3.4'
+          sourcemaps: './dist'
 
       - name: Build and push image
         uses: docker/build-push-action@v5
