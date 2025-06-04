@@ -91,13 +91,20 @@ export class BotService {
   async onVoiceStateUpdate(
     @Context() [oldState, newState]: ContextOf<'voiceStateUpdate'>,
   ) {
-    const voiceChannel = oldState.channel || newState.channel;
+    const voiceChannel = oldState.channel ?? newState.channel;
 
     const voiceChannelMembers = voiceChannel.members.filter(
       (member) => !member.user.bot,
     );
 
     if (!voiceChannelMembers.size) {
+      const timeout = this.timeouts.get(voiceChannel.guildId);
+
+      if (timeout) {
+        clearTimeout(timeout);
+        this.timeouts.delete(voiceChannel.guildId);
+      }
+
       const player = this.playerManager.get(voiceChannel.guildId);
 
       if (!player || voiceChannel.id !== player.voiceChannelId) return;

@@ -17,8 +17,7 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json",
-    "sentry:sourcemaps": "sentry-cli sourcemaps inject --org alexf0x --project fmusic-discord-bot ./dist && sentry-cli sourcemaps upload --org alexf0x --project fmusic-discord-bot ./dist"
+    "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
     "@necord/lavalink": "^1.1.4",
