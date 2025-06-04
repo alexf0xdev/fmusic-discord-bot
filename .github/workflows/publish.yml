@@ -8,22 +8,27 @@ on:
 jobs:
   build-and-push-sourcemaps:
     name: Publish Source Maps
+    runs-on: ubuntu-latest
     permissions:
       contents: read
       packages: write
-    runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Install Node v22
+      - uses: pnpm/action-setup@v4
+        name: Install pnpm
+        with:
+          version: 10
+          run_install: false
+
+      - name: Install Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 22
-          cache: pnpm
-          cache-dependency-path: pnpm-lock.yaml
+          node-version: 20
+          cache: 'pnpm'
 
       - name: Install dependencies
         run: pnpm install
@@ -42,6 +47,7 @@ jobs:
           sourcemaps: './dist'
 
   build-and-push-image:
+    name: Publish Source Maps
     runs-on: ubuntu-latest
     permissions:
       packages: write
