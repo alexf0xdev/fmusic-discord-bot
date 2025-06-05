@@ -90,6 +90,11 @@ export class QueueCommand {
         });
     });
 
-    await paginate({ interaction, pages, otherEmbeds: [currentTrackEmbed] });
+    await paginate({
+      interaction,
+      pages,
+      otherEmbeds: [currentTrackEmbed],
+      ephemeral: true,
+    });
   }
 }

@@ -11,14 +11,14 @@ import {
 export const paginate = async ({
   interaction,
   pages,
-  ephemeral,
   otherEmbeds,
+  ephemeral,
   timeout = 300000,
 }: {
   interaction: ChatInputCommandInteraction<CacheType>;
   pages: EmbedBuilder[];
-  ephemeral?: boolean;
   otherEmbeds?: EmbedBuilder[];
+  ephemeral?: boolean;
   timeout?: number;
 }) => {
   let currentPage = 1;
@@ -68,6 +68,8 @@ export const paginate = async ({
       embeds: [...otherEmbeds, pages[currentPage - 1]],
       components: [row],
     });
+
+    collector.resetTimer();
   });
 
   collector.on('end', (_) => {
