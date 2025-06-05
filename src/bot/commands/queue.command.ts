@@ -1,27 +1,11 @@
 import { PlayerManager } from '@necord/lavalink';
 import { Injectable } from '@nestjs/common';
-import { ButtonBuilder, ButtonStyle, MessageFlags } from 'discord.js';
-import paginationEmbed from 'discordjs-v14-pagination';
-import {
-  Context,
-  NumberOption,
-  Options,
-  SlashCommand,
-  SlashCommandContext,
-} from 'necord';
+import { MessageFlags } from 'discord.js';
+import { Context, SlashCommand, SlashCommandContext } from 'necord';
 import { SOURCES } from '../bot.constants';
 import { ERROR_EMBED, MAIN_EMBED } from '../utils/embeds.util';
 import { formatMilliseconds } from '../utils/format.util';
-
-export class QueueCommandOptions {
-  @NumberOption({
-    name: 'страница',
-    description: 'Страница очереди треков',
-    min_value: 1,
-    max_value: 100,
-  })
-  page?: number;
-}
+import { paginate } from '../utils/paginate.util';
 
 @Injectable()
 export class QueueCommand {
@@ -31,10 +15,7 @@ export class QueueCommand {
     name: 'queue',
     description: 'Показать очередь треков',
   })
-  async queue(
-    @Context() [interaction]: SlashCommandContext,
-    @Options() { page }: QueueCommandOptions,
-  ) {
+  async queue(@Context() [interaction]: SlashCommandContext) {
     const player = this.playerManager.get(interaction.guild.id);
 
     if (!player) {
@@ -75,37 +56,40 @@ export class QueueCommand {
           .setAuthor({ name: 'Сейчас играет' })
           .setDescription('Сейчас ничего не играет.');
 
-    const currentPage = page ?? 1;
+    if (!tracks.length) {
+      const embed = MAIN_EMBED()
+        .setAuthor({ name: 'Очередь треков' })
+        .setDescription('Треков нет.');
 
-    const pages = tracks.map(
-      (track, index) =>
-        `${index + 2}. [**${track.info.title} от ${track.info.author}**](${track.info.uri})`,
-    );
+      return interaction.reply({
+        embeds: [currentTrackEmbed, embed],
+        flags: MessageFlags.Ephemeral,
+      });
+    }
 
-    const queueListEmbed = tracks.length
-      ? MAIN_EMBED()
-          .setAuthor({ name: 'Очередь треков' })
-          .setDescription('Трек')
-      : MAIN_EMBED()
-          .setAuthor({ name: 'Очередь треков' })
-          .setDescription('Треков нет.');
+    const trackPerPage = 10;
+    const totalPages = Math.ceil(tracks.length / trackPerPage);
 
-    const previousButton = new ButtonBuilder()
-      .setCustomId('previous')
-      .setLabel('⬅️')
-      .setStyle(ButtonStyle.Secondary);
+    const pages = [...Array(totalPages)].map((_, index) => {
+      const startIndex = index * trackPerPage;
+      const endIndex = startIndex + trackPerPage;
+      const pageTracks = tracks.slice(startIndex, endIndex);
 
-    const nextButton = new ButtonBuilder()
-      .setCustomId('next')
-      .setLabel('➡️')
-      .setStyle(ButtonStyle.Secondary);
+      return MAIN_EMBED()
+        .setAuthor({ name: 'Очередь треков' })
+        .setDescription(
+          pageTracks
+            .map(
+              (track, i) =>
+                `${startIndex + i + 1}. [**${track.info.title} от ${track.info.author}**](${track.info.uri})`,
+            )
+            .join('\n'),
+        )
+        .setFooter({
+          text: `Страница: ${index + 1}/${totalPages}  •  Всего треков: ${tracks.length}`,
+        });
+    });
 
-    await paginationEmbed(
-      interaction,
-      [currentTrackEmbed, queueListEmbed],
-      [previousButton, nextButton],
-      60000,
-      'Страница {current}/{total}',
-    );
+    await paginate({ interaction, pages, otherEmbeds: [currentTrackEmbed] });
   }
 }

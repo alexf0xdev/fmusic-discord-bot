@@ -35,9 +35,6 @@ importers:
       discord.js:
         specifier: ^14.19.3
         version: 14.19.3
-      discordjs-v14-pagination:
-        specifier: ^1.0.6
-        version: 1.0.6
       lavalink-client:
         specifier: ^2.5.6
         version: 2.5.6
@@ -1697,9 +1694,6 @@ packages:
   discord.js@14.19.3:
     resolution: {integrity: sha512-lncTRk0k+8Q5D3nThnODBR8fR8x2fM798o8Vsr40Krx0DjPwpZCuxxTcFMrXMQVOqM1QB9wqWgaXPg3TbmlHqA==}
     engines: {node: '>=18'}
-
-  discordjs-v14-pagination@1.0.6:
-    resolution: {integrity: sha512-XVBbOw9mkN0R4QyvoTSMT6fVMG8kV4bi5trk/WzN0cbC+iZqt5Ug3PXtc93dqBHNoifVtsHmzEr/cebdPmBHrA==}
 
   dotenv-expand@12.0.1:
     resolution: {integrity: sha512-LaKRbou8gt0RNID/9RoI+J2rvXsBRPMV7p+ElHlPhcSARbCPDYcYG2s1TIzAfWv4YSgyY5taidWzzs31lNV3yQ==}
@@ -5349,13 +5343,6 @@ snapshots:
       magic-bytes.js: 1.12.1
       tslib: 2.8.1
       undici: 6.21.1
-    transitivePeerDependencies:
-      - bufferutil
-      - utf-8-validate
-
-  discordjs-v14-pagination@1.0.6:
-    dependencies:
-      discord.js: 14.19.3
     transitivePeerDependencies:
       - bufferutil
       - utf-8-validate

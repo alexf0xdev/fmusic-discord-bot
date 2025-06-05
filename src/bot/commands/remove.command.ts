@@ -15,7 +15,7 @@ export class RemoveCommandOptions {
     name: 'айди_трека',
     description: 'Айди трека из очереди',
     required: true,
-    min_value: 2,
+    min_value: 1,
   })
   trackId: number;
 }
@@ -54,7 +54,7 @@ export class RemoveCommand {
       });
     }
 
-    const index = trackId - 2;
+    const index = trackId - 1;
 
     const track = player.queue.tracks[index];
 
