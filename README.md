@@ -12,32 +12,40 @@ Supported services:
 
 ## Setup
 
-Clone the repository and install dependencies:
+### Install Docker
 
-```bash
-git clone https://github.com/alexf0xdev/fmusic-discord-bot.git
-cd fmusic-discord-bot
-pnpm install
+If you haven't installed Docker yet, install it by running as root:
+
 ```
+curl -sSL https://get.docker.com | sh
+exit
+```
+
+And log in again.
+
+### Copy docker compose file
+
+Just download `docker-compose.yml` file from repository
 
 ### Fill environment variable
 
-Create a `.env` file in the project directory and fill it with the following `.enx.example`.
+Fill environment variable in the `docker-compose.yml` file
 
-### Build project
-
-Build this project using:
-
-```bash
-pnpm build
+```Dockerfile
+environment:
+  BOT_TOKEN: '<discord bot token>'
+  LAVALINK_HOST: '<lavalink host>'
+  LAVALINK_PORT: '<lavalink port>'
+  LAVALINK_PASSWORD: '<lavalink password>'
+  SENTRY_DSN: '<sentry dsn>'
 ```
 
 ### Run project
 
-Run the project using:
+To run project use this command:
 
-```bash
-pnpm start:dev
+```
+docker-compose up -d
 ```
 
 ## License
