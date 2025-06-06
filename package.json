@@ -27,7 +27,7 @@
     "@nestjs/mapped-types": "^2.1.0",
     "@sentry/cli": "^2.45.0",
     "@sentry/nestjs": "^9.26.0",
-    "@sentry/profiling-node": "^9.26.0",
+    "@sentry/profiling-node": "^9.27.0",
     "discord.js": "^14.19.3",
     "lavalink-client": "^2.5.6",
     "necord": "^6.8.14",
