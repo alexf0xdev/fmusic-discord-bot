@@ -30,7 +30,7 @@ export class QueueCommand {
     const tracks = player.queue.tracks;
     const track = player.queue.current;
 
-    const sourceInfo = SOURCES[track.info.sourceName];
+    const sourceInfo = SOURCES[track?.info.sourceName];
 
     const currentTrackEmbed = track
       ? MAIN_EMBED()
