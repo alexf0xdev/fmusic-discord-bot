@@ -6,7 +6,7 @@ COPY package*.json ./
 
 RUN npm install -g pnpm
 
-RUN pnpm install --frozen-lockfile
+RUN pnpm fetch --frozen-lockfile && pnpm install --frozen-lockfile --prod
 
 COPY . .
 
