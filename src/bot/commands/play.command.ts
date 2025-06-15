@@ -8,8 +8,7 @@ import {
   SlashCommandContext,
   StringOption,
 } from 'necord';
-import { SOURCES } from '../bot.constants';
-import { ERROR_EMBED, MAIN_EMBED } from '../utils/embeds.util';
+import { ERROR_EMBED, MAIN_EMBED, SOURCES } from '../bot.constants';
 import { formatMilliseconds } from '../utils/format.util';
 
 export class PlayCommandOptions {
@@ -53,10 +52,8 @@ export class PlayCommand {
     const member = interaction.guild.members.cache.get(interaction.user.id);
 
     if (!member.voice.channel) {
-      const embed = ERROR_EMBED().setDescription('Войдите в канал.');
-
       return interaction.reply({
-        embeds: [embed],
+        embeds: [ERROR_EMBED().setDescription('Войдите в канал.')],
         flags: MessageFlags.Ephemeral,
       });
     }
@@ -74,10 +71,8 @@ export class PlayCommand {
       }
 
       if (player.voiceChannelId !== member.voice.channelId) {
-        const embed = ERROR_EMBED().setDescription('Войдите в канал с ботом.');
-
         return interaction.reply({
-          embeds: [embed],
+          embeds: [ERROR_EMBED().setDescription('Войдите в канал с ботом.')],
           flags: MessageFlags.Ephemeral,
         });
       }
@@ -85,10 +80,8 @@ export class PlayCommand {
       const result = await player.search({ query, source }, member.id);
 
       if (!result || !result.tracks?.length) {
-        const embed = ERROR_EMBED().setDescription('Трек не найден.');
-
         return interaction.reply({
-          embeds: [embed],
+          embeds: [ERROR_EMBED().setDescription('Трек не найден.')],
           flags: MessageFlags.Ephemeral,
         });
       }
@@ -148,7 +141,9 @@ export class PlayCommand {
 
       await interaction.reply({ embeds: [embed] });
     } catch (error) {
-      const embed = ERROR_EMBED().setDescription('Произошла ошибка.');
+      const embed = ERROR_EMBED().setDescription(
+        'Произошла ошибка. Возможно сервис не поддерживается.',
+      );
 
       await interaction.reply({
         embeds: [embed],

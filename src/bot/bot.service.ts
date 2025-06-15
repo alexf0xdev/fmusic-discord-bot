@@ -8,7 +8,7 @@ import {
 import { Injectable, Logger } from '@nestjs/common';
 import { ActivityType, Collection, GuildManager } from 'discord.js';
 import { Context, ContextOf, On, Once } from 'necord';
-import { MAIN_EMBED } from './utils/embeds.util';
+import { MAIN_EMBED } from './bot.constants';
 
 @Injectable()
 export class BotService {

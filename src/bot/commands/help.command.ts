@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { MessageFlags } from 'discord.js';
 import { Context, SlashCommand, SlashCommandContext } from 'necord';
-import { MAIN_EMBED } from '../utils/embeds.util';
+import { MAIN_EMBED } from '../bot.constants';
 
 @Injectable()
 export class HelpCommand {

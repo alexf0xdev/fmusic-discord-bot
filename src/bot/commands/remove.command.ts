@@ -8,7 +8,7 @@ import {
   SlashCommand,
   SlashCommandContext,
 } from 'necord';
-import { ERROR_EMBED, MAIN_EMBED } from '../utils/embeds.util';
+import { ERROR_EMBED, MAIN_EMBED } from '../bot.constants';
 
 export class RemoveCommandOptions {
   @IntegerOption({
@@ -35,10 +35,8 @@ export class RemoveCommand {
     const player = this.playerManager.get(interaction.guild.id);
 
     if (!player) {
-      const embed = ERROR_EMBED().setDescription('Бот не запущен.');
-
       return interaction.reply({
-        embeds: [embed],
+        embeds: [ERROR_EMBED().setDescription('Бот не запущен.')],
         flags: MessageFlags.Ephemeral,
       });
     }
@@ -46,10 +44,8 @@ export class RemoveCommand {
     const member = interaction.guild.members.cache.get(interaction.user.id);
 
     if (player.voiceChannelId !== member.voice.channelId) {
-      const embed = ERROR_EMBED().setDescription('Войдите в канал с ботом.');
-
       return interaction.reply({
-        embeds: [embed],
+        embeds: [ERROR_EMBED().setDescription('Войдите в канал с ботом.')],
         flags: MessageFlags.Ephemeral,
       });
     }
@@ -59,10 +55,8 @@ export class RemoveCommand {
     const track = player.queue.tracks[index];
 
     if (!track) {
-      const embed = ERROR_EMBED().setDescription('Трек не найден.');
-
       return interaction.reply({
-        embeds: [embed],
+        embeds: [ERROR_EMBED().setDescription('Трек не найден.')],
         flags: MessageFlags.Ephemeral,
       });
     }

@@ -2,8 +2,7 @@ import { PlayerManager } from '@necord/lavalink';
 import { Injectable } from '@nestjs/common';
 import { MessageFlags } from 'discord.js';
 import { Context, SlashCommand, SlashCommandContext } from 'necord';
-import { SOURCES } from '../bot.constants';
-import { ERROR_EMBED, MAIN_EMBED } from '../utils/embeds.util';
+import { ERROR_EMBED, MAIN_EMBED, SOURCES } from '../bot.constants';
 import { formatMilliseconds } from '../utils/format.util';
 import { paginate } from '../utils/paginate.util';
 
@@ -19,10 +18,8 @@ export class QueueCommand {
     const player = this.playerManager.get(interaction.guild.id);
 
     if (!player) {
-      const embed = ERROR_EMBED().setDescription('Бот не запущен.');
-
       return interaction.reply({
-        embeds: [embed],
+        embeds: [ERROR_EMBED().setDescription('Бот не запущен.')],
         flags: MessageFlags.Ephemeral,
       });
     }

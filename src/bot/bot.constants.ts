@@ -1,3 +1,4 @@
+import { EmbedBuilder } from 'discord.js';
 import { SourceNames } from 'lavalink-client/dist/types';
 
 export const SOURCES: Partial<
@@ -24,3 +25,8 @@ export const SOURCES: Partial<
     iconUrl: 'https://drive.google.com/uc?id=1nICE_PC7sH0dxrPSvBiCgcBHQSITsy2q',
   },
 };
+
+export const MAIN_EMBED = () => new EmbedBuilder().setColor('#f8ae25');
+
+export const ERROR_EMBED = () =>
+  new EmbedBuilder().setColor('#ff0000').setAuthor({ name: 'Ошибка' });
