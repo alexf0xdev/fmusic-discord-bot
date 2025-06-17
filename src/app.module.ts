@@ -6,7 +6,11 @@ import { BotModule } from './bot/bot.module';
 import { SentryFilter } from './common/filters/sentry.filter';
 
 @Module({
-  imports: [ConfigModule.forRoot(), SentryModule.forRoot(), BotModule],
+  imports: [
+    ConfigModule.forRoot({ isGlobal: true }),
+    SentryModule.forRoot(),
+    BotModule,
+  ],
   providers: [
     {
       provide: APP_FILTER,

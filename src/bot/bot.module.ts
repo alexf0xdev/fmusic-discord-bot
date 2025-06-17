@@ -16,7 +16,6 @@ import { StopCommand } from './commands/stop.command';
 @Module({
   imports: [
     NecordModule.forRootAsync({
-      imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({
         token: configService.get<string>('BOT_TOKEN'),
