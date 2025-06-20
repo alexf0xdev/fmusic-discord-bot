@@ -33,10 +33,12 @@ export class StopCommand {
 
     await player.destroy();
 
+    const embed = MAIN_EMBED().setDescription(
+      'Очередь треков очищена, бот отключен.',
+    );
+
     await interaction.reply({
-      embeds: [
-        MAIN_EMBED().setDescription('Очередь треков очищена, бот отключен.'),
-      ],
+      embeds: [embed],
     });
   }
 }

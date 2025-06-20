@@ -1,5 +1,6 @@
 {
   "name": "fmusic-discord-bot",
+  "version": "1.0.0",
   "author": "alexf0xdev",
   "private": true,
   "license": "MIT",
