@@ -1,6 +1,5 @@
 import { NecordLavalinkService, PlayerManager } from '@necord/lavalink';
 import { Injectable } from '@nestjs/common';
-import { MessageFlags } from 'discord.js';
 import {
   Context,
   Options,
@@ -49,12 +48,13 @@ export class PlayCommand {
     @Context() [interaction]: SlashCommandContext,
     @Options() { query, source }: PlayCommandOptions,
   ) {
+    await interaction.deferReply();
+
     const member = interaction.guild.members.cache.get(interaction.user.id);
 
     if (!member.voice.channel) {
-      return interaction.reply({
+      return interaction.editReply({
         embeds: [ERROR_EMBED().setDescription('Войдите в канал.')],
-        flags: MessageFlags.Ephemeral,
       });
     }
 
@@ -71,18 +71,16 @@ export class PlayCommand {
       }
 
       if (player.voiceChannelId !== member.voice.channelId) {
-        return interaction.reply({
+        return interaction.editReply({
           embeds: [ERROR_EMBED().setDescription('Войдите в канал с ботом.')],
-          flags: MessageFlags.Ephemeral,
         });
       }
 
       const result = await player.search({ query, source }, member.id);
 
       if (!result || !result.tracks?.length) {
-        return interaction.reply({
+        return interaction.editReply({
           embeds: [ERROR_EMBED().setDescription('Трек не найден.')],
-          flags: MessageFlags.Ephemeral,
         });
       }
 
@@ -139,16 +137,13 @@ export class PlayCommand {
             )
             .setFooter({ text: sourceInfo.name, iconURL: sourceInfo.iconUrl });
 
-      await interaction.reply({ embeds: [embed] });
+      await interaction.editReply({ embeds: [embed] });
     } catch (error) {
       const embed = ERROR_EMBED().setDescription(
         'Произошла ошибка. Возможно сервис не поддерживается.',
       );
 
-      await interaction.reply({
-        embeds: [embed],
-        flags: MessageFlags.Ephemeral,
-      });
+      await interaction.editReply({ embeds: [embed] });
     }
   }
 }

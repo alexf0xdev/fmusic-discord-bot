@@ -5,20 +5,17 @@ import {
   CacheType,
   ChatInputCommandInteraction,
   EmbedBuilder,
-  MessageFlags,
 } from 'discord.js';
 
 export const paginate = async ({
   interaction,
   pages,
   otherEmbeds,
-  ephemeral,
   timeout = 300000,
 }: {
   interaction: ChatInputCommandInteraction<CacheType>;
   pages: EmbedBuilder[];
   otherEmbeds?: EmbedBuilder[];
-  ephemeral?: boolean;
   timeout?: number;
 }) => {
   let currentPage = 1;
@@ -38,10 +35,9 @@ export const paginate = async ({
 
   let row = new ActionRowBuilder<ButtonBuilder>().addComponents(buttons);
 
-  const message = await interaction.reply({
+  const message = await interaction.editReply({
     embeds: [...otherEmbeds, pages[currentPage - 1]],
     components: [row],
-    flags: ephemeral ? MessageFlags.Ephemeral : undefined,
   });
 
   const collector = message.createMessageComponentCollector({

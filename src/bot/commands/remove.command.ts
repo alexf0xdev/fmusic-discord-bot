@@ -1,6 +1,5 @@
 import { PlayerManager } from '@necord/lavalink';
 import { Injectable } from '@nestjs/common';
-import { MessageFlags } from 'discord.js';
 import {
   Context,
   IntegerOption,
@@ -32,21 +31,21 @@ export class RemoveCommand {
     @Context() [interaction]: SlashCommandContext,
     @Options() { trackId }: RemoveCommandOptions,
   ) {
+    await interaction.deferReply();
+
     const player = this.playerManager.get(interaction.guild.id);
 
     if (!player) {
-      return interaction.reply({
+      return interaction.editReply({
         embeds: [ERROR_EMBED().setDescription('Бот не запущен.')],
-        flags: MessageFlags.Ephemeral,
       });
     }
 
     const member = interaction.guild.members.cache.get(interaction.user.id);
 
     if (player.voiceChannelId !== member.voice.channelId) {
-      return interaction.reply({
+      return interaction.editReply({
         embeds: [ERROR_EMBED().setDescription('Войдите в канал с ботом.')],
-        flags: MessageFlags.Ephemeral,
       });
     }
 
@@ -55,9 +54,8 @@ export class RemoveCommand {
     const track = player.queue.tracks[index];
 
     if (!track) {
-      return interaction.reply({
+      return interaction.editReply({
         embeds: [ERROR_EMBED().setDescription('Трек не найден.')],
-        flags: MessageFlags.Ephemeral,
       });
     }
 
@@ -67,6 +65,6 @@ export class RemoveCommand {
       `Трек [**${track.info.title} от ${track.info.author}**](${track.info.uri}) убран из очереди.`,
     );
 
-    await interaction.reply({ embeds: [embed] });
+    await interaction.editReply({ embeds: [embed] });
   }
 }

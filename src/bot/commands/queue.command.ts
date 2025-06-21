@@ -15,12 +15,13 @@ export class QueueCommand {
     description: 'Показать очередь треков',
   })
   async queue(@Context() [interaction]: SlashCommandContext) {
+    await interaction.deferReply({ flags: MessageFlags.Ephemeral });
+
     const player = this.playerManager.get(interaction.guild.id);
 
     if (!player) {
-      return interaction.reply({
+      return interaction.editReply({
         embeds: [ERROR_EMBED().setDescription('Бот не запущен.')],
-        flags: MessageFlags.Ephemeral,
       });
     }
 
@@ -58,10 +59,7 @@ export class QueueCommand {
         .setAuthor({ name: 'Очередь треков' })
         .setDescription('Треков нет.');
 
-      return interaction.reply({
-        embeds: [currentTrackEmbed, embed],
-        flags: MessageFlags.Ephemeral,
-      });
+      return interaction.editReply({ embeds: [currentTrackEmbed, embed] });
     }
 
     const trackPerPage = 10;
@@ -87,11 +85,6 @@ export class QueueCommand {
         });
     });
 
-    await paginate({
-      interaction,
-      pages,
-      otherEmbeds: [currentTrackEmbed],
-      ephemeral: true,
-    });
+    await paginate({ interaction, pages, otherEmbeds: [currentTrackEmbed] });
   }
 }
