@@ -10,6 +10,7 @@ import { PlayCommand } from './commands/play.command';
 import { PreviousCommand } from './commands/previous.command';
 import { QueueCommand } from './commands/queue.command';
 import { RemoveCommand } from './commands/remove.command';
+import { SeekCommand } from './commands/seek.command';
 import { SkipCommand } from './commands/skip.command';
 import { StopCommand } from './commands/stop.command';
 
@@ -26,23 +27,30 @@ import { StopCommand } from './commands/stop.command';
         ],
         development:
           configService.get<string>('NODE_ENV') === 'development'
-            ? [configService.get<string>('DISCORD_DEV_GUILD_ID')]
+            ? [configService.get<string>('BOT_DEV_GUILD_ID')]
             : undefined,
       }),
     }),
     NecordLavalinkModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
-      useFactory: (configService: ConfigService) => ({
-        nodes: [
-          {
-            authorization: configService.get<string>('LAVALINK_PASSWORD'),
-            host: configService.get<string>('LAVALINK_HOST'),
-            port: +configService.get<number>('LAVALINK_PORT'),
-            id: 'main_node',
-          },
-        ],
-      }),
+      useFactory: (configService: ConfigService) => {
+        const ids = configService.get<string>('LAVALINK_IDS').split(';');
+        const hosts = configService.get<string>('LAVALINK_HOSTS').split(';');
+        const ports = configService.get<string>('LAVALINK_PORTS').split(';');
+        const passwords = configService
+          .get<string>('LAVALINK_PASSWORDS')
+          .split(';');
+
+        return {
+          nodes: ids.map((id, index) => ({
+            id,
+            host: hosts[index],
+            port: +ports[index],
+            authorization: passwords[index],
+          })),
+        };
+      },
     }),
   ],
   providers: [
@@ -55,6 +63,7 @@ import { StopCommand } from './commands/stop.command';
     QueueCommand,
     HelpCommand,
     RemoveCommand,
+    SeekCommand,
   ],
 })
 export class BotModule {}

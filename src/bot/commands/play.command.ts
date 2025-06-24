@@ -8,7 +8,7 @@ import {
   StringOption,
 } from 'necord';
 import { ERROR_EMBED, MAIN_EMBED, SOURCES } from '../bot.constants';
-import { formatMilliseconds } from '../utils/format.util';
+import { formatMilliseconds } from '../utils/time.util';
 
 export class PlayCommandOptions {
   @StringOption({
@@ -66,7 +66,7 @@ export class PlayCommand {
           ...this.lavalinkService.extractInfoForPlayer(interaction),
           selfDeaf: true,
           selfMute: false,
-          volume: 40,
+          volume: +(process.env.BOT_VOLUME ?? 40),
         });
       }
 
@@ -81,6 +81,16 @@ export class PlayCommand {
       if (!result || !result.tracks?.length) {
         return interaction.editReply({
           embeds: [ERROR_EMBED().setDescription('Трек не найден.')],
+        });
+      }
+
+      const tracksWithAdded = player.queue.tracks.length + result.tracks.length;
+
+      if (tracksWithAdded > 200) {
+        return interaction.editReply({
+          embeds: [
+            ERROR_EMBED().setDescription('Превышен лимит количества треков.'),
+          ],
         });
       }
 

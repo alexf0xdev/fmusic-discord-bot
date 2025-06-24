@@ -15,6 +15,7 @@ export class RemoveCommandOptions {
     description: 'Айди трека из очереди',
     required: true,
     min_value: 1,
+    max_value: 200,
   })
   trackId: number;
 }

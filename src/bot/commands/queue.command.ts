@@ -3,8 +3,8 @@ import { Injectable } from '@nestjs/common';
 import { MessageFlags } from 'discord.js';
 import { Context, SlashCommand, SlashCommandContext } from 'necord';
 import { ERROR_EMBED, MAIN_EMBED, SOURCES } from '../bot.constants';
-import { formatMilliseconds } from '../utils/format.util';
 import { paginate } from '../utils/paginate.util';
+import { formatMilliseconds } from '../utils/time.util';
 
 @Injectable()
 export class QueueCommand {

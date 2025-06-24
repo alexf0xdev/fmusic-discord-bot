@@ -78,7 +78,7 @@ export class BotService {
       if (!textChannel.isTextBased()) return;
 
       const embed = MAIN_EMBED().setDescription(
-        'Очередь треков неактивна больше 5 минут - бот отключен.',
+        'За последние 5 минут не воспроизоводилось ни одного трека - бот отключен.',
       );
 
       await textChannel.send({ embeds: [embed] });
@@ -118,7 +118,7 @@ export class BotService {
       if (!textChannel.isTextBased()) return;
 
       const embed = MAIN_EMBED().setDescription(
-        'В канале с ботом никого нет - очередь треков очищена, бот отключен.',
+        'В канале с ботом никого нет - бот отключен.',
       );
 
       await textChannel.send({ embeds: [embed] });
