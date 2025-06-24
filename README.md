@@ -34,9 +34,11 @@ Fill environment variable in the `docker-compose.yml` file
 ```Dockerfile
 environment:
   BOT_TOKEN: '<discord bot token>'
-  LAVALINK_HOST: '<lavalink host>'
-  LAVALINK_PORT: '<lavalink port>'
-  LAVALINK_PASSWORD: '<lavalink password>'
+  BOT_VOLUME: 40
+  LAVALINK_IDS: '<lavalink ids>'
+  LAVALINK_HOSTS: '<lavalink hosts>'
+  LAVALINK_PORTS: '<lavalink ports>'
+  LAVALINK_PASSWORDS: '<lavalink passwords>'
   SENTRY_DSN: '<sentry dsn>'
 ```
 
