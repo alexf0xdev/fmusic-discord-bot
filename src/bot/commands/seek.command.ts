@@ -13,7 +13,7 @@ import { formatMilliseconds, timeToMilliseconds } from '../utils/time.util';
 export class SeekCommandOptions {
   @StringOption({
     name: 'время',
-    description: 'Время для перемотки (в секундах или в формате 0:00)',
+    description: 'Время для перемотки (в формате 0:00)',
     required: true,
     min_length: 1,
     max_length: 8,
@@ -64,20 +64,26 @@ export class SeekCommand {
       });
     }
 
-    const timeMilliseconds = time.includes(':')
-      ? timeToMilliseconds(time)
-      : +time * 1000;
+    const position = timeToMilliseconds(time);
 
-    if (isNaN(timeMilliseconds)) {
+    if (isNaN(position)) {
       return interaction.editReply({
         embeds: [ERROR_EMBED().setDescription('Неверное значение времени.')],
       });
     }
 
-    await player.seek(timeMilliseconds);
+    if (position > track.info.duration) {
+      return interaction.editReply({
+        embeds: [
+          ERROR_EMBED().setDescription('Трек меньше указанного времени.'),
+        ],
+      });
+    }
+
+    await player.seek(position);
 
     const embed = MAIN_EMBED().setDescription(
-      `Трек [**${track.info.title} от ${track.info.author}**](${track.info.uri}) перемотан на **${formatMilliseconds(timeMilliseconds)}** из **${formatMilliseconds(track.info.duration)}**.`,
+      `Трек [**${track.info.title} от ${track.info.author}**](${track.info.uri}) перемотан на **${formatMilliseconds(position)}** из **${formatMilliseconds(track.info.duration)}**.`,
     );
 
     await interaction.editReply({ embeds: [embed] });
