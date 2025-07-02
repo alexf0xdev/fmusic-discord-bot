@@ -50,6 +50,20 @@ export class BotService {
     this.logger.log(`Player created at ${player.guildId}`);
   }
 
+  @OnLavalinkManager('playerDestroy')
+  onPlayerDestroy(
+    @Context() [player]: LavalinkManagerContextOf<'playerDestroy'>,
+  ) {
+    this.logger.log(`Player destroy at ${player.guildId}`);
+
+    const timeout = this.timeouts.get(player.guildId);
+
+    if (timeout) {
+      clearTimeout(timeout);
+      this.timeouts.delete(player.guildId);
+    }
+  }
+
   @OnLavalinkManager('trackStart')
   async onTrackStart(
     @Context() [player]: LavalinkManagerContextOf<'trackStart'>,
