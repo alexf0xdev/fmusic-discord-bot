@@ -112,22 +112,15 @@ export class BotService {
     );
 
     if (!voiceChannelMembers.size) {
-      const timeout = this.timeouts.get(voiceChannel.guildId);
-
-      if (timeout) {
-        clearTimeout(timeout);
-        this.timeouts.delete(voiceChannel.guildId);
-      }
-
       const player = this.playerManager.get(voiceChannel.guildId);
 
       if (!player || voiceChannel.id !== player.voiceChannelId) return;
 
+      await player.destroy();
+
       const textChannel = voiceChannel.guild.channels.cache.get(
         player.textChannelId,
       );
-
-      await player.destroy();
 
       if (!textChannel.isTextBased()) return;
 
