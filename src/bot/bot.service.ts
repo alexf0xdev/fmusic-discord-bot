@@ -92,7 +92,7 @@ export class BotService {
       if (!textChannel.isTextBased()) return;
 
       const embed = MAIN_EMBED().setDescription(
-        'За последние 5 минут не воспроизоводилось ни одного трека - бот отключен.',
+        'За последние 5 минут не воспроизводилось ни одного трека - бот отключен.',
       );
 
       await textChannel.send({ embeds: [embed] });
