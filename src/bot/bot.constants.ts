@@ -1,5 +1,5 @@
 import { EmbedBuilder } from 'discord.js';
-import { SourceNames } from 'lavalink-client/dist/types';
+import { SourceNames } from 'lavalink-client';
 
 export const SOURCES: Partial<
   Record<SourceNames, { name: string; iconUrl: string }>
