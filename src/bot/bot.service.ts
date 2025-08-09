@@ -6,7 +6,7 @@ import {
   PlayerManager,
 } from '@necord/lavalink';
 import { Injectable, Logger } from '@nestjs/common';
-import { ActivityType, Collection, GuildManager } from 'discord.js';
+import { Collection, GuildManager } from 'discord.js';
 import { Context, ContextOf, On, Once } from 'necord';
 import { MAIN_EMBED } from './bot.constants';
 
@@ -24,8 +24,6 @@ export class BotService {
   @Once('ready')
   async onReady(@Context() [client]: ContextOf<'ready'>) {
     this.logger.log(`Bot logged in as ${client.user.username}`);
-
-    client.user.setActivity('/help', { type: ActivityType.Listening });
   }
 
   @On('warn')

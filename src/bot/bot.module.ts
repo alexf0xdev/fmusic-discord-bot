@@ -1,7 +1,7 @@
 import { NecordLavalinkModule } from '@necord/lavalink';
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { IntentsBitField } from 'discord.js';
+import { ActivityType, IntentsBitField } from 'discord.js';
 import { NecordModule } from 'necord';
 import { BotService } from './bot.service';
 import { HelpCommand } from './commands/help.command';
@@ -29,6 +29,9 @@ import { StopCommand } from './commands/stop.command';
           configService.get<string>('NODE_ENV') === 'development'
             ? [configService.get<string>('BOT_DEV_GUILD_ID')]
             : undefined,
+        presence: {
+          activities: [{ name: '/help', type: ActivityType.Listening }],
+        },
       }),
     }),
     NecordLavalinkModule.forRootAsync({
