@@ -12,7 +12,7 @@ export class QueueCommand {
 
   @SlashCommand({
     name: 'queue',
-    description: 'Показать очередь треков',
+    description: 'Show track queue',
   })
   async queue(@Context() [interaction]: SlashCommandContext) {
     await interaction.deferReply({ flags: MessageFlags.Ephemeral });
@@ -21,7 +21,7 @@ export class QueueCommand {
 
     if (!player) {
       return interaction.editReply({
-        embeds: [ERROR_EMBED().setDescription('Бот не запущен.')],
+        embeds: [ERROR_EMBED().setDescription('The bot is not running.')],
       });
     }
 
@@ -33,13 +33,13 @@ export class QueueCommand {
     const currentTrackEmbed = track
       ? MAIN_EMBED()
           .setTitle(track.info.title)
-          .setAuthor({ name: 'Сейчас играет' })
+          .setAuthor({ name: 'Currently playing' })
           .setDescription(track.info.author)
           .setURL(track.info.uri)
           .setThumbnail(track.info.artworkUrl)
           .addFields(
             {
-              name: 'Длительность',
+              name: 'Duration',
               value: `${formatMilliseconds(player.lastPosition)} из ${formatMilliseconds(track.info.duration)}`,
               inline: true,
             },
@@ -51,13 +51,13 @@ export class QueueCommand {
           )
           .setFooter({ text: sourceInfo.name, iconURL: sourceInfo.iconUrl })
       : MAIN_EMBED()
-          .setAuthor({ name: 'Сейчас играет' })
-          .setDescription('Сейчас ничего не играет.');
+          .setAuthor({ name: 'Currently playing' })
+          .setDescription('Nothing is playing right now.');
 
     if (!tracks.length) {
       const embed = MAIN_EMBED()
-        .setAuthor({ name: 'Очередь треков' })
-        .setDescription('Треков нет.');
+        .setAuthor({ name: 'Track queue' })
+        .setDescription('There are no tracks.');
 
       return interaction.editReply({ embeds: [currentTrackEmbed, embed] });
     }
@@ -71,17 +71,17 @@ export class QueueCommand {
       const pageTracks = tracks.slice(startIndex, endIndex);
 
       return MAIN_EMBED()
-        .setAuthor({ name: 'Очередь треков' })
+        .setAuthor({ name: 'Track queue' })
         .setDescription(
           pageTracks
             .map(
               (track, i) =>
-                `${startIndex + i + 1}. [**${track.info.title} от ${track.info.author}**](${track.info.uri})`,
+                `${startIndex + i + 1}. [**${track.info.title} by ${track.info.author}**](${track.info.uri})`,
             )
             .join('\n'),
         )
         .setFooter({
-          text: `Страница: ${index + 1}/${totalPages}  •  Всего треков: ${tracks.length}`,
+          text: `Page: ${index + 1}/${totalPages}  •  Total tracks: ${tracks.length}`,
         });
     });
 

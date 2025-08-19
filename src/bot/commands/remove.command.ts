@@ -1,18 +1,12 @@
 import { PlayerManager } from '@necord/lavalink';
 import { Injectable } from '@nestjs/common';
-import {
-  Context,
-  IntegerOption,
-  Options,
-  SlashCommand,
-  SlashCommandContext,
-} from 'necord';
+import { Context, IntegerOption, Options, SlashCommand, SlashCommandContext } from 'necord';
 import { ERROR_EMBED, MAIN_EMBED } from '../bot.constants';
 
 export class RemoveCommandOptions {
   @IntegerOption({
-    name: 'айди_трека',
-    description: 'Айди трека из очереди',
+    name: 'track_id',
+    description: 'Track ID from queue',
     required: true,
     min_value: 1,
     max_value: 200,
@@ -26,7 +20,7 @@ export class RemoveCommand {
 
   @SlashCommand({
     name: 'remove',
-    description: 'Убрать трек из очереди',
+    description: 'Remove track from queue',
   })
   async remove(
     @Context() [interaction]: SlashCommandContext,
@@ -38,7 +32,7 @@ export class RemoveCommand {
 
     if (!player) {
       return interaction.editReply({
-        embeds: [ERROR_EMBED().setDescription('Бот не запущен.')],
+        embeds: [ERROR_EMBED().setDescription('The bot is not running.')],
       });
     }
 
@@ -46,7 +40,7 @@ export class RemoveCommand {
 
     if (player.voiceChannelId !== member.voice.channelId) {
       return interaction.editReply({
-        embeds: [ERROR_EMBED().setDescription('Войдите в канал с ботом.')],
+        embeds: [ERROR_EMBED().setDescription('Join the channel with the bot.')],
       });
     }
 
@@ -56,14 +50,14 @@ export class RemoveCommand {
 
     if (!track) {
       return interaction.editReply({
-        embeds: [ERROR_EMBED().setDescription('Трек не найден.')],
+        embeds: [ERROR_EMBED().setDescription('Track not found.')],
       });
     }
 
     await player.queue.remove(index);
 
     const embed = MAIN_EMBED().setDescription(
-      `Трек [**${track.info.title} от ${track.info.author}**](${track.info.uri}) убран из очереди.`,
+      `Track [**${track.info.title} by ${track.info.author}**](${track.info.uri}) removed from the queue.`,
     );
 
     await interaction.editReply({ embeds: [embed] });

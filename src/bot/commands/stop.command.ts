@@ -9,7 +9,7 @@ export class StopCommand {
 
   @SlashCommand({
     name: 'stop',
-    description: 'Очистить очередь треков и отключить бота',
+    description: 'Clear the track queue and the disable bot',
   })
   async stop(@Context() [interaction]: SlashCommandContext) {
     await interaction.deferReply();
@@ -18,7 +18,7 @@ export class StopCommand {
 
     if (!player) {
       return interaction.editReply({
-        embeds: [ERROR_EMBED().setDescription('Бот не запущен.')],
+        embeds: [ERROR_EMBED().setDescription('The bot is not running.')],
       });
     }
 
@@ -26,15 +26,13 @@ export class StopCommand {
 
     if (player.voiceChannelId !== member.voice.channelId) {
       return interaction.editReply({
-        embeds: [ERROR_EMBED().setDescription('Войдите в канал с ботом.')],
+        embeds: [ERROR_EMBED().setDescription('Join the channel with the bot.')],
       });
     }
 
     await player.destroy();
 
-    const embed = MAIN_EMBED().setDescription(
-      'Очередь треков очищена, бот отключен.',
-    );
+    const embed = MAIN_EMBED().setDescription('The track queue cleared and the bot is disabled.');
 
     await interaction.editReply({ embeds: [embed] });
   }

@@ -42,16 +42,12 @@ export class BotService {
   }
 
   @OnLavalinkManager('playerCreate')
-  onPlayerCreate(
-    @Context() [player]: LavalinkManagerContextOf<'playerCreate'>,
-  ) {
+  onPlayerCreate(@Context() [player]: LavalinkManagerContextOf<'playerCreate'>) {
     this.logger.log(`Player created at ${player.guildId}`);
   }
 
   @OnLavalinkManager('playerDestroy')
-  onPlayerDestroy(
-    @Context() [player]: LavalinkManagerContextOf<'playerDestroy'>,
-  ) {
+  onPlayerDestroy(@Context() [player]: LavalinkManagerContextOf<'playerDestroy'>) {
     this.logger.log(`Player destroy at ${player.guildId}`);
 
     const timeout = this.timeouts.get(player.guildId);
@@ -63,9 +59,7 @@ export class BotService {
   }
 
   @OnLavalinkManager('trackStart')
-  async onTrackStart(
-    @Context() [player]: LavalinkManagerContextOf<'trackStart'>,
-  ) {
+  async onTrackStart(@Context() [player]: LavalinkManagerContextOf<'trackStart'>) {
     const timeout = this.timeouts.get(player.guildId);
 
     if (timeout) {
@@ -100,14 +94,10 @@ export class BotService {
   }
 
   @On('voiceStateUpdate')
-  async onVoiceStateUpdate(
-    @Context() [oldState, newState]: ContextOf<'voiceStateUpdate'>,
-  ) {
+  async onVoiceStateUpdate(@Context() [oldState, newState]: ContextOf<'voiceStateUpdate'>) {
     const voiceChannel = oldState.channel ?? newState.channel;
 
-    const voiceChannelMembers = voiceChannel.members.filter(
-      (member) => !member.user.bot,
-    );
+    const voiceChannelMembers = voiceChannel.members.filter((member) => !member.user.bot);
 
     if (!voiceChannelMembers.size) {
       const player = this.playerManager.get(voiceChannel.guildId);
@@ -116,15 +106,11 @@ export class BotService {
 
       await player.destroy();
 
-      const textChannel = voiceChannel.guild.channels.cache.get(
-        player.textChannelId,
-      );
+      const textChannel = voiceChannel.guild.channels.cache.get(player.textChannelId);
 
       if (!textChannel.isTextBased()) return;
 
-      const embed = MAIN_EMBED().setDescription(
-        'В канале с ботом никого нет - бот отключен.',
-      );
+      const embed = MAIN_EMBED().setDescription('В канале с ботом никого нет - бот отключен.');
 
       await textChannel.send({ embeds: [embed] });
     }

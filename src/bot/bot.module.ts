@@ -41,9 +41,7 @@ import { StopCommand } from './commands/stop.command';
         const ids = configService.get<string>('LAVALINK_IDS').split(';');
         const hosts = configService.get<string>('LAVALINK_HOSTS').split(';');
         const ports = configService.get<string>('LAVALINK_PORTS').split(';');
-        const passwords = configService
-          .get<string>('LAVALINK_PASSWORDS')
-          .split(';');
+        const passwords = configService.get<string>('LAVALINK_PASSWORDS').split(';');
 
         return {
           nodes: ids.map((id, index) => ({

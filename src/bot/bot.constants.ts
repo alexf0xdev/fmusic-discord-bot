@@ -1,9 +1,7 @@
 import { EmbedBuilder } from 'discord.js';
 import { SourceNames } from 'lavalink-client';
 
-export const SOURCES: Partial<
-  Record<SourceNames, { name: string; iconUrl: string }>
-> = {
+export const SOURCES: Partial<Record<SourceNames, { name: string; iconUrl: string }>> = {
   youtube: {
     name: 'YouTube',
     iconUrl: 'https://drive.google.com/uc?id=1xT26cRDc1-AsjV6934bsJroWFqS4HOxp',

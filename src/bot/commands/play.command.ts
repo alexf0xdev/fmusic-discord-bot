@@ -1,33 +1,27 @@
 import { NecordLavalinkService, PlayerManager } from '@necord/lavalink';
 import { Injectable } from '@nestjs/common';
-import {
-  Context,
-  Options,
-  SlashCommand,
-  SlashCommandContext,
-  StringOption,
-} from 'necord';
+import { Context, Options, SlashCommand, SlashCommandContext, StringOption } from 'necord';
 import { ERROR_EMBED, MAIN_EMBED, SOURCES } from '../bot.constants';
 import { formatMilliseconds } from '../utils/time.util';
 
 export class PlayCommandOptions {
   @StringOption({
-    name: 'запрос',
-    description: 'Ссылка или название трека/плейлиста',
+    name: 'query',
+    description: 'Link/title of track/playlist',
     required: true,
     max_length: 500,
   })
   query: string;
 
   @StringOption({
-    name: 'сервис',
-    description: 'Сервис для поиска трека/плейлиста',
+    name: 'source',
+    description: 'Source for track/playlist search',
     choices: [
       { name: 'YouTube', value: 'youtube' },
       { name: 'Spotify', value: 'spotify' },
       { name: 'SoundCloud', value: 'soundcloud' },
-      { name: 'Яндекс Музыка', value: 'yandexmusic' },
-      { name: 'ВКонтакте', value: 'vkmusic' },
+      { name: 'Yandex Music', value: 'yandexmusic' },
+      { name: 'VKontakte', value: 'vkmusic' },
     ],
   })
   source: 'youtube' | 'spotify' | 'soundcloud' | 'yandexmusic' | 'vkmusic';
@@ -42,7 +36,7 @@ export class PlayCommand {
 
   @SlashCommand({
     name: 'play',
-    description: 'Найти трек/плейлист по ссылке/названию',
+    description: 'Find a track/playlist by link/title',
   })
   async play(
     @Context() [interaction]: SlashCommandContext,
@@ -54,7 +48,7 @@ export class PlayCommand {
 
     if (!member.voice.channel) {
       return interaction.editReply({
-        embeds: [ERROR_EMBED().setDescription('Войдите в канал.')],
+        embeds: [ERROR_EMBED().setDescription('Join the channel.')],
       });
     }
 
@@ -72,7 +66,7 @@ export class PlayCommand {
 
       if (player.voiceChannelId !== member.voice.channelId) {
         return interaction.editReply({
-          embeds: [ERROR_EMBED().setDescription('Войдите в канал с ботом.')],
+          embeds: [ERROR_EMBED().setDescription('Join the channel with the bot.')],
         });
       }
 
@@ -80,7 +74,7 @@ export class PlayCommand {
 
       if (!result || !result.tracks?.length) {
         return interaction.editReply({
-          embeds: [ERROR_EMBED().setDescription('Трек не найден.')],
+          embeds: [ERROR_EMBED().setDescription('Track not found.')],
         });
       }
 
@@ -88,9 +82,7 @@ export class PlayCommand {
 
       if (tracksWithAdded > 200) {
         return interaction.editReply({
-          embeds: [
-            ERROR_EMBED().setDescription('Превышен лимит количества треков.'),
-          ],
+          embeds: [ERROR_EMBED().setDescription('The track limit exceeded.')],
         });
       }
 
@@ -110,18 +102,18 @@ export class PlayCommand {
       const embed = isPlaylist
         ? MAIN_EMBED()
             .setTitle(playlist.title)
-            .setAuthor({ name: 'Плейлист добавлен' })
+            .setAuthor({ name: 'Playlist added' })
             .setDescription(playlist.author)
             .setURL(playlist.uri)
             .setThumbnail(playlist.thumbnail)
             .addFields(
               {
-                name: 'Длительность',
+                name: 'Duration',
                 value: formatMilliseconds(playlist.duration),
                 inline: true,
               },
               {
-                name: 'Добавлено в очередь',
+                name: 'Added to queue',
                 value: `${result.tracks.length + 1}`,
                 inline: true,
               },
@@ -129,18 +121,18 @@ export class PlayCommand {
             .setFooter({ text: sourceInfo.name, iconURL: sourceInfo.iconUrl })
         : MAIN_EMBED()
             .setTitle(track.info.title)
-            .setAuthor({ name: 'Трек добавлен' })
+            .setAuthor({ name: 'Track added' })
             .setDescription(track.info.author)
             .setURL(track.info.uri)
             .setThumbnail(track.info.artworkUrl)
             .addFields(
               {
-                name: 'Длительность',
+                name: 'Duration',
                 value: formatMilliseconds(track.info.duration),
                 inline: true,
               },
               {
-                name: 'В очереди',
+                name: 'In queue',
                 value: `${player.queue.tracks.length + 1}`,
                 inline: true,
               },
@@ -149,11 +141,11 @@ export class PlayCommand {
 
       await interaction.editReply({ embeds: [embed] });
     } catch (error) {
-      const embed = ERROR_EMBED().setDescription(
-        'Произошла ошибка. Возможно сервис не поддерживается.',
-      );
-
-      await interaction.editReply({ embeds: [embed] });
+      await interaction.editReply({
+        embeds: [
+          ERROR_EMBED().setDescription('An error has occurred. The source may not be supported.'),
+        ],
+      });
     }
   }
 }

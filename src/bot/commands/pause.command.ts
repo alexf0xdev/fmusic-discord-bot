@@ -9,7 +9,7 @@ export class PauseCommand {
 
   @SlashCommand({
     name: 'pause',
-    description: 'Поставить трек на паузу/убрать с паузы',
+    description: 'Pause/unpause a track',
   })
   async pause(@Context() [interaction]: SlashCommandContext) {
     await interaction.deferReply();
@@ -18,7 +18,7 @@ export class PauseCommand {
 
     if (!player) {
       return interaction.editReply({
-        embeds: [ERROR_EMBED().setDescription('Бот не запущен.')],
+        embeds: [ERROR_EMBED().setDescription('The bot is not running.')],
       });
     }
 
@@ -26,7 +26,7 @@ export class PauseCommand {
 
     if (player.voiceChannelId !== member.voice.channelId) {
       return interaction.editReply({
-        embeds: [ERROR_EMBED().setDescription('Войдите в канал с ботом.')],
+        embeds: [ERROR_EMBED().setDescription('Join the channel with the bot.')],
       });
     }
 
@@ -35,7 +35,7 @@ export class PauseCommand {
     player.paused ? await player.resume() : await player.pause();
 
     const embed = MAIN_EMBED().setDescription(
-      `Трек [**${track.info.title} от ${track.info.author}**](${track.info.uri}) ${player.paused ? 'поставлен на паузу' : 'убран с паузы'}. `,
+      `Track [**${track.info.title} by ${track.info.author}**](${track.info.uri}) ${player.paused ? `paused` : `unpaused`}.`,
     );
 
     await interaction.editReply({ embeds: [embed] });

@@ -9,7 +9,7 @@ export class SkipCommand {
 
   @SlashCommand({
     name: 'skip',
-    description: 'Пропустить трек в очереди',
+    description: 'Skip track in queue',
   })
   async skip(@Context() [interaction]: SlashCommandContext) {
     await interaction.deferReply();
@@ -18,7 +18,7 @@ export class SkipCommand {
 
     if (!player) {
       return interaction.editReply({
-        embeds: [ERROR_EMBED().setDescription('Бот не запущен.')],
+        embeds: [ERROR_EMBED().setDescription('The bot is not running.')],
       });
     }
 
@@ -26,7 +26,7 @@ export class SkipCommand {
 
     if (player.voiceChannelId !== member.voice.channelId) {
       return interaction.editReply({
-        embeds: [ERROR_EMBED().setDescription('Войдите в канал с ботом.')],
+        embeds: [ERROR_EMBED().setDescription('Join the channel with the bot.')],
       });
     }
 
@@ -34,7 +34,7 @@ export class SkipCommand {
 
     if (!currentTrack) {
       return interaction.editReply({
-        embeds: [ERROR_EMBED().setDescription('Треков в очереди больше нет.')],
+        embeds: [ERROR_EMBED().setDescription("There're no more tracks in the queue.")],
       });
     }
 
@@ -43,7 +43,7 @@ export class SkipCommand {
     nextTrack ? await player.skip() : await player.stopPlaying();
 
     const embed = MAIN_EMBED().setDescription(
-      `Трек [**${currentTrack.info.title} от ${currentTrack.info.author}**](${currentTrack.info.uri}) пропущен в очереди.`,
+      `Track [**${currentTrack.info.title} by ${currentTrack.info.author}**](${currentTrack.info.uri}) skipped in the queue.`,
     );
 
     await interaction.editReply({ embeds: [embed] });

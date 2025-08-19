@@ -9,7 +9,7 @@ export class PreviousCommand {
 
   @SlashCommand({
     name: 'previous',
-    description: 'Включить предыдущий трек',
+    description: 'Play previous track',
   })
   async previous(@Context() [interaction]: SlashCommandContext) {
     await interaction.deferReply();
@@ -18,7 +18,7 @@ export class PreviousCommand {
 
     if (!player) {
       return interaction.editReply({
-        embeds: [ERROR_EMBED().setDescription('Бот не запущен.')],
+        embeds: [ERROR_EMBED().setDescription('The bot is not running.')],
       });
     }
 
@@ -26,7 +26,7 @@ export class PreviousCommand {
 
     if (player.voiceChannelId !== member.voice.channelId) {
       return interaction.editReply({
-        embeds: [ERROR_EMBED().setDescription('Войдите в канал с ботом.')],
+        embeds: [ERROR_EMBED().setDescription('Join the channel with the bot.')],
       });
     }
 
@@ -34,14 +34,14 @@ export class PreviousCommand {
 
     if (!track) {
       return interaction.editReply({
-        embeds: [ERROR_EMBED().setDescription('Предыдущего трека нет.')],
+        embeds: [ERROR_EMBED().setDescription('There is no previous track.')],
       });
     }
 
     await player.play({ clientTrack: track });
 
     const embed = MAIN_EMBED().setDescription(
-      `Трек [**${track.info.title} от ${track.info.author}**](${track.info.uri}) включен заново.`,
+      `Track [**${track.info.title} by ${track.info.author}**](${track.info.uri}) replayed.`,
     );
 
     await interaction.editReply({ embeds: [embed] });
