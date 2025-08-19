@@ -75,7 +75,7 @@ export class SeekCommand {
     await player.seek(position);
 
     const embed = MAIN_EMBED().setDescription(
-      `Track [**${track.info.title} by ${track.info.author}**](${track.info.uri}) is now **${formatMilliseconds(position)}** into **${formatMilliseconds(track.info.duration)}**.`,
+      `Track [**${track.info.title} by ${track.info.author}**](${track.info.uri}) is now **${formatMilliseconds(position)}** of **${formatMilliseconds(track.info.duration)}**.`,
     );
 
     await interaction.editReply({ embeds: [embed] });

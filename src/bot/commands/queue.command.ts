@@ -40,7 +40,7 @@ export class QueueCommand {
           .addFields(
             {
               name: 'Duration',
-              value: `${formatMilliseconds(player.lastPosition)} из ${formatMilliseconds(track.info.duration)}`,
+              value: `${formatMilliseconds(player.lastPosition)} of ${formatMilliseconds(track.info.duration)}`,
               inline: true,
             },
             {
