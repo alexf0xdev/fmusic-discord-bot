@@ -57,7 +57,7 @@ export class QueueCommand {
     if (!tracks.length) {
       const embed = MAIN_EMBED()
         .setAuthor({ name: 'Track queue' })
-        .setDescription('There are no tracks.');
+        .setDescription("There're no tracks.");
 
       return interaction.editReply({ embeds: [currentTrackEmbed, embed] });
     }
