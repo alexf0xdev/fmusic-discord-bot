@@ -15,11 +15,11 @@ export const SOURCES: Partial<Record<SourceNames, { name: string; iconUrl: strin
     iconUrl: 'https://drive.google.com/uc?id=1tNUZye8IRlMUObxQpjsf34x2s2NpmpI9',
   },
   yandexmusic: {
-    name: 'Яндекс Музыка',
+    name: 'Yandex Music',
     iconUrl: 'https://drive.google.com/uc?id=1FSvEs7PrM3IK5qJr9K17mo910JZwJKm4',
   },
   vkmusic: {
-    name: 'ВКонтакте',
+    name: 'VKontakte',
     iconUrl: 'https://drive.google.com/uc?id=1nICE_PC7sH0dxrPSvBiCgcBHQSITsy2q',
   },
 };
@@ -27,4 +27,4 @@ export const SOURCES: Partial<Record<SourceNames, { name: string; iconUrl: strin
 export const MAIN_EMBED = () => new EmbedBuilder().setColor('#f8ae25');
 
 export const ERROR_EMBED = () =>
-  new EmbedBuilder().setColor('#ff0000').setAuthor({ name: 'Ошибка' });
+  new EmbedBuilder().setColor('#ff0000').setAuthor({ name: 'Error' });
