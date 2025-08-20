@@ -84,7 +84,7 @@ export class BotService {
       if (!textChannel.isTextBased()) return;
 
       const embed = MAIN_EMBED().setDescription(
-        'За последние 5 минут не воспроизводилось ни одного трека - бот отключен.',
+        'No tracks have played in the last 5 minutes - bot disabled.',
       );
 
       await textChannel.send({ embeds: [embed] });
@@ -110,7 +110,9 @@ export class BotService {
 
       if (!textChannel.isTextBased()) return;
 
-      const embed = MAIN_EMBED().setDescription('В канале с ботом никого нет - бот отключен.');
+      const embed = MAIN_EMBED().setDescription(
+        'There is no one in the channel with the bot - the bot is disabled.',
+      );
 
       await textChannel.send({ embeds: [embed] });
     }
