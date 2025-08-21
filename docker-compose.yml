@@ -2,12 +2,18 @@ services:
   fmusic-discord-bot:
     container_name: fmusic-discord-bot
     image: ghcr.io/alexf0xdev/fmusic-discord-bot:latest
-    restart: unless-stopped
+    restart: always
     environment:
-      BOT_TOKEN: '<discord bot token>'
+      BOT_TOKEN: '<BOT_TOKEN>'
       BOT_VOLUME: 40
-      LAVALINK_IDS: '<lavalink ids>'
-      LAVALINK_HOSTS: '<lavalink hosts>'
-      LAVALINK_PORTS: '<lavalink ports>'
-      LAVALINK_PASSWORDS: '<lavalink passwords>'
-      SENTRY_DSN: '<sentry dsn>'
+      # Split by ;
+      LAVALINK_IDS: '<LAVALINK_IDS>'
+      LAVALINK_HOSTS: '<LAVALINK_HOSTS>'
+      LAVALINK_PORTS: '<LAVALINK_POTS>'
+      LAVALINK_PASSWORDS: '<LAVALINK_PASSWORDS>'
+      SENTRY_DSN: '<SENTRY_DSN>'
+    networks:
+      - fmusic-discord-bot
+networks:
+  fmusic-discord-bot:
+    name: fmusic-discord-bot
