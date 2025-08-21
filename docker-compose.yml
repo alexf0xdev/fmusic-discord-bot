@@ -7,9 +7,12 @@ services:
       BOT_TOKEN: '<BOT_TOKEN>'
       BOT_VOLUME: 40
       # Split by ;
-      LAVALINK_IDS: '<LAVALINK_IDS>'
+      LAVALINK_ID: '<LAVALINK_IDS>'
+      # Split by ;
       LAVALINK_HOSTS: '<LAVALINK_HOSTS>'
+      # Split by ;
       LAVALINK_PORTS: '<LAVALINK_POTS>'
+      # Split by ;
       LAVALINK_PASSWORDS: '<LAVALINK_PASSWORDS>'
       SENTRY_DSN: '<SENTRY_DSN>'
     networks:

@@ -18,10 +18,7 @@ If you haven't installed Docker yet, install it by running as root:
 
 ```
 curl -sSL https://get.docker.com | sh
-exit
 ```
-
-And log in again.
 
 ### Copy docker compose file
 
@@ -30,17 +27,6 @@ Just download `docker-compose.yml` file from repository
 ### Fill environment variable
 
 Fill environment variable in the `docker-compose.yml` file
-
-```Dockerfile
-environment:
-  BOT_TOKEN: '<discord bot token>'
-  BOT_VOLUME: 40
-  LAVALINK_IDS: '<lavalink ids>'
-  LAVALINK_HOSTS: '<lavalink hosts>'
-  LAVALINK_PORTS: '<lavalink ports>'
-  LAVALINK_PASSWORDS: '<lavalink passwords>'
-  SENTRY_DSN: '<sentry dsn>'
-```
 
 ### Run project
 
