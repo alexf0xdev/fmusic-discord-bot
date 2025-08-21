@@ -105,16 +105,6 @@ export class BotService {
       if (!player || voiceChannel.id !== player.voiceChannelId) return;
 
       await player.destroy();
-
-      const textChannel = voiceChannel.guild.channels.cache.get(player.textChannelId);
-
-      if (!textChannel.isTextBased()) return;
-
-      const embed = MAIN_EMBED().setDescription(
-        'There is no one in the channel with the bot - the bot is disabled.',
-      );
-
-      await textChannel.send({ embeds: [embed] });
     }
   }
 }
