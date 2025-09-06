@@ -3,7 +3,7 @@ import {
   NodeManagerContextOf,
   OnLavalinkManager,
   OnNodeManager,
-  PlayerManager,
+  PlayerManagerService,
 } from '@necord/lavalink';
 import { Injectable, Logger } from '@nestjs/common';
 import { Collection, GuildManager } from 'discord.js';
@@ -14,7 +14,7 @@ import { MAIN_EMBED } from './bot.constants';
 export class BotService {
   constructor(
     private guildManager: GuildManager,
-    private playerManager: PlayerManager,
+    private playerManager: PlayerManagerService,
   ) {}
 
   private logger = new Logger(BotService.name);

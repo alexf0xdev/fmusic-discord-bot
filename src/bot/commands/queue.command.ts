@@ -1,4 +1,4 @@
-import { PlayerManager } from '@necord/lavalink';
+import { PlayerManagerService } from '@necord/lavalink';
 import { Injectable } from '@nestjs/common';
 import { MessageFlags } from 'discord.js';
 import { Context, SlashCommand, SlashCommandContext } from 'necord';
@@ -7,7 +7,7 @@ import { formatMilliseconds, paginate } from '../utils';
 
 @Injectable()
 export class QueueCommand {
-  constructor(private playerManager: PlayerManager) {}
+  constructor(private playerManager: PlayerManagerService) {}
 
   @SlashCommand({
     name: 'queue',

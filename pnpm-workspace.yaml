@@ -1,4 +1,5 @@
 onlyBuiltDependencies:
   - '@nestjs/core'
   - '@sentry/cli'
+  - necord
   - unrs-resolver

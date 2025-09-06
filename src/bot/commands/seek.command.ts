@@ -1,4 +1,4 @@
-import { PlayerManager } from '@necord/lavalink';
+import { PlayerManagerService } from '@necord/lavalink';
 import { Injectable } from '@nestjs/common';
 import { Context, Options, SlashCommand, SlashCommandContext, StringOption } from 'necord';
 import { ERROR_EMBED, MAIN_EMBED } from '../bot.constants';
@@ -17,7 +17,7 @@ export class SeekCommandOptions {
 
 @Injectable()
 export class SeekCommand {
-  constructor(private playerManager: PlayerManager) {}
+  constructor(private playerManager: PlayerManagerService) {}
 
   @SlashCommand({
     name: 'seek',
