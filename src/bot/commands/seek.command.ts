@@ -2,7 +2,7 @@ import { PlayerManager } from '@necord/lavalink';
 import { Injectable } from '@nestjs/common';
 import { Context, Options, SlashCommand, SlashCommandContext, StringOption } from 'necord';
 import { ERROR_EMBED, MAIN_EMBED } from '../bot.constants';
-import { formatMilliseconds, timeToMilliseconds } from '../utils/time.util';
+import { formatMilliseconds, timeToMilliseconds } from '../utils';
 
 export class SeekCommandOptions {
   @StringOption({

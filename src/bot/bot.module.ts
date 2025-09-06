@@ -4,31 +4,23 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ActivityType, IntentsBitField } from 'discord.js';
 import { NecordModule } from 'necord';
 import { BotService } from './bot.service';
-import { HelpCommand } from './commands/help.command';
-import { PauseCommand } from './commands/pause.command';
-import { PlayCommand } from './commands/play.command';
-import { PreviousCommand } from './commands/previous.command';
-import { QueueCommand } from './commands/queue.command';
-import { RemoveCommand } from './commands/remove.command';
-import { SeekCommand } from './commands/seek.command';
-import { SkipCommand } from './commands/skip.command';
-import { StopCommand } from './commands/stop.command';
+import Commands from './commands';
 
 @Module({
   imports: [
     NecordModule.forRootAsync({
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({
-        token: configService.get<string>('BOT_TOKEN'),
+        token: configService.getOrThrow<string>('BOT_TOKEN'),
         intents: [
           IntentsBitField.Flags.Guilds,
           IntentsBitField.Flags.GuildMessages,
           IntentsBitField.Flags.GuildVoiceStates,
         ],
         development:
-          configService.get<string>('NODE_ENV') === 'development'
-            ? [configService.get<string>('BOT_DEV_GUILD_ID')]
-            : undefined,
+          configService.getOrThrow<string>('NODE_ENV') === 'development'
+            ? [configService.getOrThrow<string>('BOT_DEV_GUILD_ID')]
+            : false,
         presence: {
           activities: [{ name: '/help', type: ActivityType.Listening }],
         },
@@ -38,10 +30,10 @@ import { StopCommand } from './commands/stop.command';
       imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => {
-        const ids = configService.get<string>('LAVALINK_IDS').split(';');
-        const hosts = configService.get<string>('LAVALINK_HOSTS').split(';');
-        const ports = configService.get<string>('LAVALINK_PORTS').split(';');
-        const passwords = configService.get<string>('LAVALINK_PASSWORDS').split(';');
+        const ids = configService.getOrThrow<string>('LAVALINK_IDS').split(';');
+        const hosts = configService.getOrThrow<string>('LAVALINK_HOSTS').split(';');
+        const ports = configService.getOrThrow<string>('LAVALINK_PORTS').split(';');
+        const passwords = configService.getOrThrow<string>('LAVALINK_PASSWORDS').split(';');
 
         return {
           nodes: ids.map((id, index) => ({
@@ -54,17 +46,6 @@ import { StopCommand } from './commands/stop.command';
       },
     }),
   ],
-  providers: [
-    BotService,
-    PlayCommand,
-    StopCommand,
-    PauseCommand,
-    SkipCommand,
-    PreviousCommand,
-    QueueCommand,
-    HelpCommand,
-    RemoveCommand,
-    SeekCommand,
-  ],
+  providers: [BotService, ...Commands],
 })
 export class BotModule {}
