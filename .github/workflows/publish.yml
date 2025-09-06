@@ -1,4 +1,4 @@
-name: Build & Deploy
+name: Push Image & Deploy
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  build-and-push-image:
+  push-image:
     name: Publish Docker Image
     runs-on: ubuntu-latest
     permissions:
@@ -32,3 +32,19 @@ jobs:
           context: .
           push: true
           tags: ghcr.io/${{ github.repository }}:latest
+  deploy:
+    needs: push-image
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to server
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            cd ${{ secrets.SSH_PROJECT_PATH }}
+            docker compose rm -fs
+            docker compose pull
+            docker image prune -f
+            docker compose up -d
