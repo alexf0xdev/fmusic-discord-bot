@@ -7,7 +7,7 @@ on:
 
 jobs:
   push-image:
-    name: Publish Docker Image
+    name: Push Docker Image
     runs-on: ubuntu-latest
     permissions:
       packages: write
@@ -33,10 +33,11 @@ jobs:
           push: true
           tags: ghcr.io/${{ github.repository }}:latest
   deploy:
+    name: Deploy to server
     needs: push-image
     runs-on: ubuntu-latest
     steps:
-      - name: Deploy to server
+      - name: Deploy via SSH
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.SSH_HOST }}

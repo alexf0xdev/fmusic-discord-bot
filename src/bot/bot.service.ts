@@ -21,8 +21,8 @@ export class BotService {
 
   private timeouts = new Collection<string, NodeJS.Timeout>();
 
-  @Once('ready')
-  async onReady(@Context() [client]: ContextOf<'ready'>) {
+  @Once('clientReady')
+  async onClientReady(@Context() [client]: ContextOf<'clientReady'>) {
     this.logger.log(`Bot logged in as ${client.user.username}`);
   }
 
@@ -48,7 +48,7 @@ export class BotService {
 
   @OnLavalinkManager('playerDestroy')
   onPlayerDestroy(@Context() [player]: LavalinkManagerContextOf<'playerDestroy'>) {
-    this.logger.log(`Player destroy at ${player.guildId}`);
+    this.logger.log(`Player destroyed at ${player.guildId}`);
 
     const timeout = this.timeouts.get(player.guildId);
 
