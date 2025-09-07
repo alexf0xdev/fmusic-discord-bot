@@ -33,7 +33,7 @@ Fill environment variable in the `docker-compose.yml` file
 To run project use this command:
 
 ```
-docker-compose up -d
+docker compose up -d
 ```
 
 ## License
