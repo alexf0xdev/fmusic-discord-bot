@@ -33,7 +33,7 @@ jobs:
           push: true
           tags: ghcr.io/${{ github.repository }}:latest
   deploy:
-    name: Deploy to server
+    name: Deploy to Server
     needs: push-image
     runs-on: ubuntu-latest
     steps:
