@@ -1,4 +1,4 @@
-name: Push Image & Deploy
+name: CI
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  push-image:
+  push-docker-image:
     name: Push Docker Image
     runs-on: ubuntu-latest
     permissions:
@@ -32,9 +32,9 @@ jobs:
           context: .
           push: true
           tags: ghcr.io/${{ github.repository }}:latest
-  deploy:
+  deploy-to-server:
     name: Deploy to Server
-    needs: push-image
+    needs: push-docker-image
     runs-on: ubuntu-latest
     steps:
       - name: Deploy via SSH
