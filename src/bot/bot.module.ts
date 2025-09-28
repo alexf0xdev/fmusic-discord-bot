@@ -22,9 +22,8 @@ import Commands from './commands';
             ? [configService.getOrThrow<string>('BOT_DEV_GUILD_ID')]
             : false,
         presence: {
-          activities: [{ name: '/help', type: ActivityType.Listening }],
+          activities: [{ name: 'fixed | /help', type: ActivityType.Listening }],
         },
-        shards: 'auto'
       }),
     }),
     NecordLavalinkModule.forRootAsync({
