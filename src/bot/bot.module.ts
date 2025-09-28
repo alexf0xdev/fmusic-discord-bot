@@ -24,6 +24,7 @@ import Commands from './commands';
         presence: {
           activities: [{ name: '/help', type: ActivityType.Listening }],
         },
+        shards: 'auto'
       }),
     }),
     NecordLavalinkModule.forRootAsync({
