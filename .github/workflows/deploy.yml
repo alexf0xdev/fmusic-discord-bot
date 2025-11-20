@@ -46,4 +46,4 @@ jobs:
             docker compose pull fmusic-bot
             docker compose rm fmusic-bot -fs
             docker compose up fmusic-bot -d
-            docker image prune -f
+            docker image prune -fa
