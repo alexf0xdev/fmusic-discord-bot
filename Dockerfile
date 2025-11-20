@@ -1,16 +1,17 @@
 FROM node:20
 
+ENV PNPM_HOME="/pnpm"
+ENV PATH="$PNPM_HOME:$PATH"
+
+RUN corepack enable && corepack prepare pnpm
+
 WORKDIR /app
 
 COPY package*.json ./
 
-RUN npm install -g pnpm
-
-RUN pnpm install
+RUN pnpm install --frozen-lockfile
 
 COPY . .
-
-ENV NODE_ENV=production
 
 RUN pnpm run build
 
